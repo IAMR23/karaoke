@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { obtenerDepartamentosPorVerificar } from "../services/departamentServices";
+import { obtenerDepartamentosPorVerificar } from "../services/departamentServices"; // Asegúrate de que esta ruta sea correcta
 
 function GestionarDepartamentos() {
   const [departamentos, setDepartamentos] = useState([]);

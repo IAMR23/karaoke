@@ -20,6 +20,7 @@ import DepartamentoCard from "./components/DepartamentoCard";
 import Chat from "./components/Chat";
 import Inicial from "./pages/Inicial";
 import Planes from "./pages/Planes";
+import React from 'react';
 
 function App() {
   // 🔹 Estado global de autenticación
