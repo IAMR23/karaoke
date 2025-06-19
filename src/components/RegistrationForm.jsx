@@ -6,7 +6,6 @@ function RegistrationForm() {
     nombre: "",
     email: "",
     password: "",
-    role: "arrendatario",
   });
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +30,6 @@ function RegistrationForm() {
         nombre: "",
         email: "",
         password: "",
-        role: "arrendatario",
       }); // Limpiar formulario
     } catch (error) {
       setError(error.response?.data?.message || "Error al registrar usuario.");

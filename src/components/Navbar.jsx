@@ -29,7 +29,7 @@ export default function Navbar({ auth, handleLogout }) {
               </Link>
             </li>
 
-            {(!auth.isAuthenticated || auth.role !== "arrendador") && (
+            {(!auth.isAuthenticated || auth.rol !== "arrendador") && (
               <li className="nav-item">
                 <Link className="nav-link" to="/buscar">
                   Favoritos ⭐
@@ -58,7 +58,7 @@ export default function Navbar({ auth, handleLogout }) {
               </>
             )}
 
-            {auth.isAuthenticated && auth.role !== "arrendatario" && (
+            {auth.isAuthenticated && auth.rol !== "arrendatario" && (
               <li className="nav-item">
                 <Link className="nav-link" to="/dashboard">
                   Dashboard
@@ -67,8 +67,8 @@ export default function Navbar({ auth, handleLogout }) {
             )}
 
             {auth.isAuthenticated &&
-              auth.role !== "arrendador" &&
-              auth.role !== "arrendatario" && (
+              auth.rol !== "arrendador" &&
+              auth.rol !== "arrendatario" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/admin">
                     Admin

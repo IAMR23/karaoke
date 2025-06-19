@@ -29,10 +29,10 @@ function LoginForm({ setAuth }) {
       localStorage.setItem("token", response.token);
 
       const decodedToken = jwtDecode(response.token);
-      const userRole = decodedToken.role; // 🔹 Extrae el rol del token
+      const userRole = decodedToken.rol; // 🔹 Extrae el rol del token
 
-      localStorage.setItem("role", userRole);
-      setAuth({ isAuthenticated: true, role: userRole });
+      localStorage.setItem("rol", userRole);
+      setAuth({ isAuthenticated: true, rol: userRole });
 
       // 🔹 Redirigir según el rol
       if (userRole === "admin") {

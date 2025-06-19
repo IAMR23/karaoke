@@ -21,10 +21,14 @@ import Chat from "./components/Chat";
 import Inicial from "./pages/Inicial";
 import Planes from "./pages/Planes";
 import React from 'react';
+import AnunciosCRUD from "./pages/AnunciosCrud";
+import CancionesCRUD from "./pages/CancionesCrud";
+import GeneroCRUD from "./pages/GeneroCrud";
+import PaginaGaleriaConVideoPrincipal from "./components/Test";
 
 function App() {
   // 🔹 Estado global de autenticación
-  const [auth, setAuth] = useState({ isAuthenticated: false, role: null });
+  const [auth, setAuth] = useState({ isAuthenticated: false, rol: null });
 
   useEffect(() => {
     // 🔹 Verificar si hay un token guardado
@@ -32,11 +36,11 @@ function App() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        setAuth({ isAuthenticated: true, role: decodedToken.role });
+        setAuth({ isAuthenticated: true, rol: decodedToken.rol });
       } catch (error) {
         console.error("Error al decodificar el token", error);
         localStorage.removeItem("token"); // Elimina el token si es inválido
-        setAuth({ isAuthenticated: false, role: null });
+        setAuth({ isAuthenticated: false, rol: null });
       }
     }
   }, []);
@@ -50,6 +54,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Inicial />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/anuncios" element={<AnunciosCRUD />} />
+            <Route path="/canciones" element={<CancionesCRUD />} />
+            <Route path="/genero" element={<GeneroCRUD />} />
+            <Route path="/test" element={<PaginaGaleriaConVideoPrincipal />} />
             <Route path="/planes" element={<Planes />} />
             <Route path="/propiedad/:id" element={<PropertyDetail />} />
             <Route path="/dashboard" element={<Dashboard />} />
