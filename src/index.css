@@ -2,3 +2,7 @@
   color-scheme: light dark;
 }
 /* @import "tailwindcss"; */
+
+body {
+  overflow-x: hidden;
+}

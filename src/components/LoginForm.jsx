@@ -30,7 +30,7 @@ function LoginForm({ setAuth }) {
 
       const decodedToken = jwtDecode(response.token);
       const userRole = decodedToken.rol; // 🔹 Extrae el rol del token
-
+      console.log(decodedToken)
       localStorage.setItem("rol", userRole);
       setAuth({ isAuthenticated: true, rol: userRole });
 
@@ -38,7 +38,7 @@ function LoginForm({ setAuth }) {
       if (userRole === "admin") {
         navigate("/dashboard");
       } else {
-        navigate("/admin"); // 🔹 En caso de rol no identificado, redirigir a inicio
+        navigate("/"); // 🔹 En caso de rol no identificado, redirigir a inicio
       }
     } catch (error) {
       setError(error.response?.data?.message || "Error al iniciar sesión.");

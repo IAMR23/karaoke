@@ -71,7 +71,7 @@ export default function GeneroCRUD() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="">
       <h2>Gestión de Géneros</h2>
       <button className="btn btn-primary mb-3" onClick={() => handleOpenModal()}>
         + Crear Género

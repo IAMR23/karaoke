@@ -34,7 +34,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -50,7 +50,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -66,7 +66,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -82,7 +82,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -98,7 +98,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -114,7 +114,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -165,7 +165,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -182,7 +182,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -198,7 +198,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -215,7 +215,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -231,7 +231,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -247,7 +247,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>
@@ -263,7 +263,7 @@ export default function Planes() {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       stroke-width="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                     >
                       <path d="M20 6 9 17l-5-5"></path>

@@ -20,11 +20,14 @@ import DepartamentoCard from "./components/DepartamentoCard";
 import Chat from "./components/Chat";
 import Inicial from "./pages/Inicial";
 import Planes from "./pages/Planes";
-import React from 'react';
+import React from "react";
 import AnunciosCRUD from "./pages/AnunciosCrud";
 import CancionesCRUD from "./pages/CancionesCrud";
 import GeneroCRUD from "./pages/GeneroCrud";
-import PaginaGaleriaConVideoPrincipal from "./components/Test";
+import FavoritosPage from "./pages/FavoritosPage";
+import PromocionesPage from "./pages/PromocionesPage";
+import SidebarLayout from "./components/SidebarLayout";
+import UsuariosPage from "./pages/UsuariosPage";
 
 function App() {
   // 🔹 Estado global de autenticación
@@ -36,6 +39,7 @@ function App() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
         setAuth({ isAuthenticated: true, rol: decodedToken.rol });
       } catch (error) {
         console.error("Error al decodificar el token", error);
@@ -52,16 +56,20 @@ function App() {
         <Navbar auth={auth} setAuth={setAuth} />
         <main className="flex-grow w-full ">
           <Routes>
-            <Route path="/" element={<Inicial />} />
+            <Route path="/" element={<SidebarLayout />}>
+              <Route path="anuncios" element={<AnunciosCRUD />} />
+              <Route path="canciones" element={<CancionesCRUD />} />
+              <Route path="genero" element={<GeneroCRUD />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="promociones" element={<PromocionesPage />} />
+              <Route path="usuarios" element={<UsuariosPage />} />
+            </Route>
+            <Route path="favoritos" element={<FavoritosPage />} />
+
+            <Route index="/" element={<Inicial />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/anuncios" element={<AnunciosCRUD />} />
-            <Route path="/canciones" element={<CancionesCRUD />} />
-            <Route path="/genero" element={<GeneroCRUD />} />
-            <Route path="/test" element={<PaginaGaleriaConVideoPrincipal />} />
             <Route path="/planes" element={<Planes />} />
             <Route path="/propiedad/:id" element={<PropertyDetail />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin" element={<AdminPanel />} />
             <Route path="/buscar" element={<SearchResults />} />
             {/* 🔹 Pasamos setAuth a LoginForm para actualizar estado tras login */}
             <Route path="/login" element={<LoginForm setAuth={setAuth} />} />

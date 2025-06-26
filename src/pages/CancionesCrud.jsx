@@ -92,7 +92,7 @@ export default function CancionCRUD() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="p-2">
       <h2>Gestión de Canciones</h2>
       <button className="btn btn-primary mb-3" onClick={() => handleOpenModal()}>
         + Crear Canción

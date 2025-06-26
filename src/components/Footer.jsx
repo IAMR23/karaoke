@@ -14,7 +14,7 @@ export default function Footer() {
         aria-label="Ir al perfil de GitHub de Ismael Simbaña"
       >
         <span className="subtitle">
-          © Propiedad de Ismael Simbaña. Todos los derechos reservados. | 2025
+          © Todos los derechos reservados. | 2025
         </span>
       </a>
     </footer>

@@ -77,8 +77,8 @@ export default function AnunciosCRUD() {
 
 
     return (
-        <div className="container py-5">
-            <h1 className="mb-4 text-center">Gestión de Anuncios</h1>
+        <div className="">
+            <h1 className="text-center">Gestión de Anuncios</h1>
 
             {/* Botón para abrir el modal */}
             <div className="text-end mb-3">

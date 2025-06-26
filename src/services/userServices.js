@@ -2,7 +2,7 @@ import api from "./axiosConfig";
 
 export const registerUser = async (userData) => {
   try {
-    const response = await api.post("/users", userData);
+    const response = await api.post("/user", userData);
     return response.data;
   } catch (error) {
     console.error("Error al registrar usuario:", error);

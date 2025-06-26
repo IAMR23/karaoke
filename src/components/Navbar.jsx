@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
-export default function Navbar({ auth, handleLogout }) {
+export default function Navbar({ auth  , setAuth}) {
+
+   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();                    // Limpia almacenamiento
+    setAuth({ isAuthenticated: false, rol: null }); // Actualiza estado global
+    navigate("/");                           // Redirige al inicio
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-4">
       <div className="container-fluid">
@@ -14,6 +23,7 @@ export default function Navbar({ auth, handleLogout }) {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
+
           <span className="navbar-toggler-icon"></span>
         </button>
 
@@ -31,7 +41,7 @@ export default function Navbar({ auth, handleLogout }) {
 
             {(!auth.isAuthenticated || auth.rol !== "arrendador") && (
               <li className="nav-item">
-                <Link className="nav-link" to="/buscar">
+                <Link className="nav-link" to="/favoritos">
                   Favoritos ⭐
                 </Link>
               </li>
@@ -58,7 +68,7 @@ export default function Navbar({ auth, handleLogout }) {
               </>
             )}
 
-            {auth.isAuthenticated && auth.rol !== "arrendatario" && (
+            {auth.isAuthenticated && auth.rol !== "cantante" && (
               <li className="nav-item">
                 <Link className="nav-link" to="/dashboard">
                   Dashboard
@@ -66,15 +76,7 @@ export default function Navbar({ auth, handleLogout }) {
               </li>
             )}
 
-            {auth.isAuthenticated &&
-              auth.rol !== "arrendador" &&
-              auth.rol !== "arrendatario" && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/admin">
-                    Admin
-                  </Link>
-                </li>
-              )}
+          
 
             {auth.isAuthenticated && (
               <li className="nav-item">
