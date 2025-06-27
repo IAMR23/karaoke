@@ -1,8 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userServices";
 import { jwtDecode } from "jwt-decode";
-import React from "react";
 
 function LoginForm({ setAuth }) {
   const [credentials, setCredentials] = useState({
@@ -24,24 +23,40 @@ function LoginForm({ setAuth }) {
     setLoading(true);
     setError(null);
 
+    // Validación básica
+    if (!credentials.email || !credentials.password) {
+      setError("Por favor completa todos los campos.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await loginUser(credentials);
       localStorage.setItem("token", response.token);
 
       const decodedToken = jwtDecode(response.token);
-      const userRole = decodedToken.rol; // 🔹 Extrae el rol del token
-      console.log(decodedToken)
-      localStorage.setItem("rol", userRole);
-      setAuth({ isAuthenticated: true, rol: userRole });
+      const userRole = decodedToken.rol;
 
-      // 🔹 Redirigir según el rol
+      localStorage.setItem("rol", userRole);
+
+      if (setAuth) {
+        setAuth({ isAuthenticated: true, rol: userRole });
+      }
+
+      // Redirigir según el rol
       if (userRole === "admin") {
         navigate("/dashboard");
       } else {
-        navigate("/"); // 🔹 En caso de rol no identificado, redirigir a inicio
+        navigate("/");
       }
+
+      // Limpiar formulario (opcional)
+      setCredentials({ email: "", password: "" });
+
     } catch (error) {
-      setError(error.response?.data?.message || "Error al iniciar sesión.");
+      setError(
+        error.response?.data?.message || error.message || "Error al iniciar sesión."
+      );
     } finally {
       setLoading(false);
     }
@@ -49,7 +64,7 @@ function LoginForm({ setAuth }) {
 
   return (
     <div className="d-flex vh-100 justify-content-center align-items-center bg-light">
-      <div className="card shadow" style={{ maxWidth: "400px", width: "100%" }}>
+      <div className="card shadow mx-2" style={{ maxWidth: "400px", width: "100%" }}>
         <div className="card-body">
           <h2 className="card-title text-center mb-4">Iniciar Sesión</h2>
 
@@ -94,6 +109,20 @@ function LoginForm({ setAuth }) {
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
           </form>
+
+          {/* Spinner visual si está cargando */}
+          {loading && (
+            <div className="text-center mt-3">
+              <div className="spinner-border text-primary" />
+            </div>
+          )}
+
+          {/* Enlace para registrarse */}
+          <div className="text-center mt-3">
+            <a href="/registro" className="text-decoration-none">
+              ¿No tienes cuenta? Regístrate
+            </a>
+          </div>
         </div>
       </div>
     </div>

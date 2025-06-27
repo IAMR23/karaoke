@@ -39,7 +39,6 @@ function App() {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
         setAuth({ isAuthenticated: true, rol: decodedToken.rol });
       } catch (error) {
         console.error("Error al decodificar el token", error);

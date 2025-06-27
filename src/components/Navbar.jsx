@@ -42,14 +42,14 @@ export default function Navbar({ auth  , setAuth}) {
             {(!auth.isAuthenticated || auth.rol !== "arrendador") && (
               <li className="nav-item">
                 <Link className="nav-link" to="/favoritos">
-                  Favoritos ⭐
+                  Favoritos
                 </Link>
               </li>
             )}
 
             <li className="nav-item">
               <Link className="nav-link fw-bold" to="/">
-                AMERICAN KARAOKE 🎤🎶
+                AMERICAN KARAOKE
               </Link>
             </li>
 
