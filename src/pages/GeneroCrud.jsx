@@ -49,7 +49,6 @@ export default function GeneroCRUD() {
         await axios.put(`${API_URL}/${editId}`, formData, { headers });
       } else {
         await axios.post(API_URL, formData, { headers });
-        console.log(formData);
       }
       setForm({ nombre: "", description: "" });
       setEditId(null);

@@ -28,6 +28,9 @@ import FavoritosPage from "./pages/FavoritosPage";
 import PromocionesPage from "./pages/PromocionesPage";
 import SidebarLayout from "./components/SidebarLayout";
 import UsuariosPage from "./pages/UsuariosPage";
+import SolicitudesCancion from "./pages/SolicitudCancion";
+import ListaCanciones from "./components/ListaCanciones";
+import MusicPlayer from "./components/MusicPlayer";
 
 function App() {
   // 🔹 Estado global de autenticación
@@ -64,6 +67,10 @@ function App() {
               <Route path="usuarios" element={<UsuariosPage />} />
             </Route>
             <Route path="favoritos" element={<FavoritosPage />} />
+            {/* Son las funcionalidades de los botones */}
+            <Route path="solicitud" element={<SolicitudesCancion />} />
+            <Route path="listacanciones" element={<ListaCanciones />} />
+            <Route path="test" element={<MusicPlayer />} />
 
             <Route index="/" element={<Inicial />} />
             <Route path="/home" element={<Home />} />

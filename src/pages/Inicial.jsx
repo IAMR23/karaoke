@@ -5,8 +5,10 @@ import AnunciosVisibles from "../components/AnunciosVisibles";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "../styles/botones.css";
+import "../styles/disco.css";
 import VideoPlayer from "../components/VideoPlayer";
 import PlaylistModal from "../components/PlaylistModal";
+import { FaCompactDisc } from "react-icons/fa";
 
 export default function Inicial() {
   const [cola, setCola] = useState([]);
@@ -14,6 +16,49 @@ export default function Inicial() {
   const [playlists, setPlaylists] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+
+  // Renderizado
+  const [seccionActiva, setSeccionActiva] = useState("video");
+
+  const renderContenido = () => {
+    switch (seccionActiva) {
+      case "buscador":
+        return <BuscadorCanciones />;
+      case "playlist":
+        return <ListaPlaylists />;
+      case "favoritos":
+        return <FavoritosCanciones />;
+      case "lista":
+        return <ListaCanciones />;
+      case "scanner":
+        return <ScannerCelular />;
+      case "video":
+      default:
+        return (
+          <iframe
+            width="100%"
+            height="400"
+            src="https://www.youtube.com/embed/Kp7eSUU9oy8"
+            title="YouTube video player"
+            frameBorder="0"
+            allowFullScreen
+          />
+        );
+    }
+  };
+
+  const [currentIndex, setCurrentIndex] = useState(0); // Añadir esto
+
+  const [modoReproduccion, setModoReproduccion] = useState("cola"); // "cola" o "playlist"
+  const [playlistActualId, setPlaylistActualId] = useState(null);
+
+  const insertarEnColaDespuesActual = (nuevaCancion) => {
+    setCola((prevCola) => {
+      const nuevaCola = [...prevCola];
+      nuevaCola.splice(currentIndex + 1, 0, nuevaCancion);
+      return nuevaCola;
+    });
+  };
 
   // Crear nuevo playlist
   const handleAddPlaylist = async (name) => {
@@ -63,27 +108,13 @@ export default function Inicial() {
           }
         };
 
-        const cargarCola = async () => {
-          try {
-            const res = await axios.get(
-              `http://localhost:5000/t/cola/${userIdDecoded}`,
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
-            setCola(res.data?.canciones || []);
-          } catch (error) {
-            console.error("Error al cargar la cola", error);
-          }
-        };
-
         cargarCola();
         cargarPlaylists();
       } catch (err) {
         console.error("Token inválido", err);
       }
     }
-  }, []);
+  }, [userId]);
 
   const cargarPlaylistACola = async (playlistId) => {
     const token = localStorage.getItem("token");
@@ -96,8 +127,50 @@ export default function Inicial() {
       );
       const canciones = res.data.canciones || [];
       setCola(canciones);
+      setModoReproduccion("playlist");
+      setPlaylistActualId(playlistId);
     } catch (err) {
       console.error("Error al cargar canciones del playlist", err);
+    }
+  };
+
+  const insertarCancion = async (songId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`http://localhost:5000/song/${songId}`);
+      const nuevaCancion = res.data;
+
+      if (modoReproduccion === "cola") {
+        await axios.post(
+          "http://localhost:5000/t/cola/add",
+          { songId },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      }
+
+      // Inserta localmente en ambos casos
+      insertarEnColaDespuesActual(nuevaCancion);
+      alert("🎵 Canción agregada correctamente");
+    } catch (err) {
+      console.error("Error al insertar canción", err);
+      alert("No se pudo agregar la canción");
+    }
+  };
+
+  const cargarCola = async () => {
+    const token = localStorage.getItem("token");
+    if (!token || !userId) return;
+    try {
+      const res = await axios.get(`http://localhost:5000/t/cola/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCola(res.data?.canciones || []);
+      setModoReproduccion("cola");
+      setPlaylistActualId(null);
+    } catch (error) {
+      console.error("Error al cargar la cola", error);
     }
   };
 
@@ -136,7 +209,11 @@ export default function Inicial() {
           </div>
 
           <div className="flex-grow-1">
-            <VideoPlayer />
+            <VideoPlayer
+              cola={cola}
+              currentIndex={currentIndex}
+              setCurrentIndex={setCurrentIndex}
+            />
           </div>
 
           <div className="d-flex flex-row flex-md-column flex-wrap justify-content-center gap-2">
@@ -151,10 +228,22 @@ export default function Inicial() {
         </div>
 
         {/* Cola dinámica */}
-        <div className="m-2 d-flex flex-row gap-2 justify-content-center align-items-center p-2 mt-3">
+
+        <div className="d-flex flex-wrap justify-content-center gap-3 m-3">
           {cola.map((cancion, index) => (
-            <div key={index} className="text-center bg-dark text-white p-2">
-              🎵 {cancion.titulo}
+            <div
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className="song-icon position-relative"
+              style={{ cursor: "pointer" }}
+              o
+            >
+              <FaCompactDisc size={40} className="mb-1 text-primary" />
+              <div className="custom-tooltip">
+                <strong>{cancion.titulo}</strong>
+                <br />
+                <small>{cancion.artista}</small>
+              </div>
             </div>
           ))}
         </div>
@@ -163,7 +252,8 @@ export default function Inicial() {
         <GaleriaYoutube
           setCola={setCola}
           cola={cola}
-          cargarCola={() => {}} // puedes ajustar si necesitas recargar desde hijo
+          cargarCola={cargarCola} // puedes ajustar si necesitas recargar desde hijo
+          onAgregarCancion={insertarCancion}
         />
       </div>
 

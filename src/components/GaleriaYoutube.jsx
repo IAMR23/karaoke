@@ -1,40 +1,58 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import { BsHeart, BsList } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa";
 import PlaylistSelectorModal from "./PlaylistSelectorModal";
 import { jwtDecode } from "jwt-decode";
-import { FaPlus } from "react-icons/fa";
+
 const API_URL = "http://localhost:5000/song";
 const FILTRO_URL = "http://localhost:5000/song/filtrar";
 
 function getYoutubeThumbnail(videoUrl) {
+  if (!videoUrl) return null;
   const match = videoUrl.match(
     /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w\-]+)/
   );
   return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
 }
 
-export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
+export default function GaleriaYoutube({
+  setCola,
+  cola,
+  cargarCola,
+  onAgregarCancion,
+}) {
   const [videos, setVideos] = useState([]);
   const [videoSeleccionado, setVideoSeleccionado] = useState(null);
-
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [selectedSongId, setSelectedSongId] = useState(null);
-
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const userId = decoded.userId;
-
-  const handleOpenModal = (songId) => {
-    setSelectedSongId(songId);
-    setShowPlaylistModal(true);
-  };
-
   const [filtros, setFiltros] = useState({
     busqueda: "",
     ordenFecha: "desc",
   });
+
+  // Autenticación segura
+  let userId = null;
+  let isAuthenticated = false;
+  try {
+    const token = localStorage.getItem("token");
+    if (token && typeof token === "string") {
+      const decoded = jwtDecode(token);
+      userId = decoded.userId;
+      isAuthenticated = true;
+    }
+  } catch (error) {
+    console.warn("Usuario no autenticado");
+  }
+
+  const handleOpenModal = (songId) => {
+    if (!isAuthenticated) {
+      alert("Inicia sesión para agregar a una playlist");
+      return;
+    }
+    setSelectedSongId(songId);
+    setShowPlaylistModal(true);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,17 +61,13 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
 
   const fetchVideos = async (usarFiltro = false) => {
     try {
-      const headers = {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      };
+      const headers = isAuthenticated
+        ? { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        : {};
 
       const url = usarFiltro ? FILTRO_URL : API_URL;
-
       const params = usarFiltro
-        ? {
-            busqueda: filtros.busqueda,
-            ordenFecha: filtros.ordenFecha,
-          }
+        ? { busqueda: filtros.busqueda, ordenFecha: filtros.ordenFecha }
         : {};
 
       const res = await axios.get(url, { headers, params });
@@ -63,25 +77,23 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
     }
   };
 
-  // 👇 Fetch inicial
   useEffect(() => {
     fetchVideos();
   }, []);
 
-  // 👇 Búsqueda automática con debounce
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (filtros.busqueda.trim() !== "") {
-        fetchVideos(true); // con filtro
+        fetchVideos(true);
       } else {
-        fetchVideos(); // sin filtro
+        fetchVideos();
       }
-    }, 500); // espera 500ms tras escribir
-
+    }, 500);
     return () => clearTimeout(delayDebounce);
   }, [filtros.busqueda, filtros.ordenFecha]);
 
   const agregarAFavoritos = async (songId) => {
+    if (!isAuthenticated) return alert("Inicia sesión para usar favoritos");
     try {
       const token = localStorage.getItem("token");
       await axios.post(
@@ -93,7 +105,6 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
           },
         }
       );
-
       alert("Canción agregada a favoritos");
     } catch (error) {
       console.error("Error al agregar a favoritos", error);
@@ -102,26 +113,20 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
   };
 
   const agregarACola = async (songId) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5000/t/cola/add",
-        { songId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    if (!isAuthenticated) return alert("Inicia sesión para agregar a cola");
 
-      // Aquí llamamos para recargar la cola actualizada
-      if (cargarCola) cargarCola();
+    try {
+      if (onAgregarCancion) {
+        await onAgregarCancion(songId);
+      }
     } catch (error) {
       console.error("Error al agregar a cola", error);
+      alert("No se pudo agregar la canción");
     }
   };
 
   const handleAddToPlaylist = async (playlistId) => {
+    if (!isAuthenticated) return;
     const token = localStorage.getItem("token");
     try {
       await axios.post(
@@ -166,24 +171,23 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
             >
               <img
                 src={thumbnail}
-                alt={video.titulo}
+                alt={`Miniatura de ${video.titulo}`}
                 className="img-fluid rounded"
                 onClick={() => setVideoSeleccionado(video)}
               />
               <div className="d-flex flex-column">
-                <span className="fw-bold text-light fw-bold">
-                  {video.titulo}
-                </span>
+                <span className="fw-bold text-light">{video.titulo}</span>
                 <div className="d-flex justify-content-between align-items-center text-light">
                   <small>
                     {video.artista} -{" "}
                     {(video.generos || []).map((g) => g.nombre).join(", ")}
                   </small>
-                  <div>
+                  <div className="d-flex gap-1">
                     <button
                       className="btn btn-sm btn-outline-danger d-flex align-items-center justify-content-center p-1"
                       onClick={() => agregarAFavoritos(video._id)}
                       title="Agregar a favoritos"
+                      disabled={!isAuthenticated}
                     >
                       <BsHeart size={18} />
                     </button>
@@ -191,17 +195,15 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
                       className="btn btn-sm btn-outline-success d-flex align-items-center justify-content-center p-1"
                       onClick={() => agregarACola(video._id)}
                       title="Agregar a cola"
+                      disabled={!isAuthenticated}
                     >
                       <BsList size={18} />
                     </button>
-
                     <button
                       className="btn btn-sm btn-outline-light d-flex align-items-center justify-content-center p-1"
-                      onClick={() => {
-                        setSelectedSongId(video._id);
-                        setShowPlaylistModal(true);
-                      }}
+                      onClick={() => handleOpenModal(video._id)}
                       title="Agregar a playlist"
+                      disabled={!isAuthenticated}
                     >
                       <FaPlus size={18} />
                     </button>
@@ -213,16 +215,18 @@ export default function GaleriaYoutube({ setCola, cola, cargarCola }) {
         })}
       </div>
 
-      <PlaylistSelectorModal
-        show={showPlaylistModal}
-        onClose={() => setShowPlaylistModal(false)}
-        userId={userId}
-        songId={selectedSongId}
-        onAddToPlaylistSuccess={() => {
-          // Aquí puedes actualizar el estado o hacer algo después
-          console.log("Canción agregada correctamente");
-        }}
-      />
+      {/* Modal solo si está autenticado */}
+      {isAuthenticated && (
+        <PlaylistSelectorModal
+          show={showPlaylistModal}
+          onClose={() => setShowPlaylistModal(false)}
+          userId={userId}
+          songId={selectedSongId}
+          onAddToPlaylistSuccess={() => {
+            console.log("Canción agregada correctamente");
+          }}
+        />
+      )}
     </div>
   );
 }

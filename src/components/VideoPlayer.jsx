@@ -1,23 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactPlayer from "react-player";
 
-export default function VideoPlayer() {
-  const playlist = [
-    {
-      url: "https://www.youtube.com/watch?v=Ys7-6_t7OEQ",
-      title: "Canción 1",
-    },
-    {
-      url: "https://www.youtube.com/watch?v=I5EC0Hryn80",
-      title: "Canción 2",
-    },
-    {
-      url: "https://www.dropbox.com/scl/fi/0o31070hzrn1gbl9h6vuz/350-PIMPINELA-SE-VA-SE-VA.mp4?rlkey=2m1bbq0ajkxnpddj605dsw0t7&st=f3jm4v2t&dl=1",
-      title: "Canción 3",
-    },
-  ];
+export default function VideoPlayer({ cola = [], currentIndex, setCurrentIndex }) {
+  const playlist = cola || [];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [showNextMessage, setShowNextMessage] = useState(false);
   const [nextSongName, setNextSongName] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -26,26 +12,43 @@ export default function VideoPlayer() {
 
   const currentVideo = playlist[currentIndex];
 
-  const nextVideo = () => {
-    if (currentIndex < playlist.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-      setShowNextMessage(false);
-    }
-  };
+  // const nextVideo = () => {
+  //   if (currentIndex < playlist.length - 1) {
+  //     setCurrentIndex((prev) => prev + 1);
+  //     setShowNextMessage(false);
+  //   }
+  // };
 
-  const prevVideo = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-      setShowNextMessage(false);
-    }
-  };
+  // const prevVideo = () => {
+  //   if (currentIndex > 0) {
+  //     setCurrentIndex((prev) => prev - 1);
+  //     setShowNextMessage(false);
+  //   }
+  // };
+
+  const nextVideo = () => {
+  if (currentIndex < cola.length - 1) {
+    setCurrentIndex(currentIndex + 1);
+    setShowNextMessage(false);
+  }
+};
+
+const prevVideo = () => {
+  if (currentIndex > 0) {
+    setCurrentIndex(currentIndex - 1);
+    setShowNextMessage(false);
+  }
+};
+
+
 
   const handleProgress = ({ playedSeconds }) => {
     const duration = playerRef.current?.getDuration?.();
     if (duration && duration - playedSeconds <= 20) {
       const next = playlist[currentIndex + 1];
       if (next) {
-        setNextSongName(next.title);
+        setNextSongName(next.titulo);
+        console.log(next.titulo)
         setShowNextMessage(true);
       }
     } else {
@@ -83,6 +86,23 @@ export default function VideoPlayer() {
     }
   };
 
+  if (!Array.isArray(cola) || cola.length === 0) {
+  return (
+    <div
+      style={{
+        background: "#000",
+        color: "white",
+        padding: "20px",
+        textAlign: "center",
+        borderRadius: "10px",
+      }}
+    >
+      🎧 No hay canciones en la cola. Añade una desde el buscador o playlist.
+    </div>
+  );
+}
+
+
   return (
     <div
       ref={containerRef}
@@ -103,7 +123,7 @@ export default function VideoPlayer() {
       <div style={{ position: "relative" }}>
         <ReactPlayer
           ref={playerRef}
-          url={currentVideo.url}
+          url={currentVideo.videoUrl}
           controls
           playing
           width="100%"
