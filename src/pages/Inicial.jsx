@@ -7,8 +7,15 @@ import { jwtDecode } from "jwt-decode";
 import "../styles/botones.css";
 import "../styles/disco.css";
 import VideoPlayer from "../components/VideoPlayer";
-import PlaylistModal from "../components/PlaylistModal";
+import PlaylistModal from "../components/PlaylistSelector";
 import { FaCompactDisc } from "react-icons/fa";
+import BuscadorCanciones from "../components/BuscadorCanciones";
+import PlaylistSelector from "../components/PlaylistSelector";
+import FavoritosPage from "./FavoritosPage";
+import { useNavigate } from "react-router-dom";
+import SolicitudesCancion from "./SolicitudCancion";
+import LoginForm from "../components/LoginForm";
+import ListadoPDFCanciones from "../components/ListadoPDFCanciones";
 
 export default function Inicial() {
   const [cola, setCola] = useState([]);
@@ -19,29 +26,66 @@ export default function Inicial() {
 
   // Renderizado
   const [seccionActiva, setSeccionActiva] = useState("video");
+  const navigate = useNavigate();
 
   const renderContenido = () => {
     switch (seccionActiva) {
       case "buscador":
-        return <BuscadorCanciones />;
+        return (
+          <BuscadorCanciones
+            setCola={setCola}
+            cola={cola}
+            cargarCola={cargarCola} // puedes ajustar si necesitas recargar desde hijo
+            onAgregarCancion={insertarCancion}
+          />
+        );
       case "playlist":
-        return <ListaPlaylists />;
+        return (
+          <PlaylistSelector
+            playlists={playlists}
+            onSelect={(playlist) => {
+              setSelectedPlaylist(playlist);
+              cargarPlaylistACola(playlist._id);
+              setShowModal(false);
+            }}
+            onAdd={handleAddPlaylist}
+            onClose={() => setShowModal(false)}
+          />
+        );
+      case "masCantado":
+        return <MasCantado />;
+
       case "favoritos":
-        return <FavoritosCanciones />;
-      case "lista":
-        return <ListaCanciones />;
+        return <FavoritosPage />;
+      case "listaCanciones":
+        return dirigir("/listaCanciones");
+      case "sugerirCanciones":
+        return <SolicitudesCancion />;
       case "scanner":
         return <ScannerCelular />;
+
+      case "ingresar":
+        return <LoginForm />;
+      case "listadoPdf":
+        return <ListadoPDFCanciones />;
+      case "calificacion":
+        return <MasCantado />;
+      case "suscribir":
+        return <ListaCanciones />;
+      case "ayuda":
+        return <ListaCanciones />;
+      case "galeriaOtros":
+        return <ScannerCelular />;
+      case "tv":
+        return <ScannerCelular />;
+
       case "video":
       default:
         return (
-          <iframe
-            width="100%"
-            height="400"
-            src="https://www.youtube.com/embed/Kp7eSUU9oy8"
-            title="YouTube video player"
-            frameBorder="0"
-            allowFullScreen
+          <VideoPlayer
+            cola={cola}
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
           />
         );
     }
@@ -58,6 +102,10 @@ export default function Inicial() {
       nuevaCola.splice(currentIndex + 1, 0, nuevaCancion);
       return nuevaCola;
     });
+  };
+
+  const dirigir = (ubicacion) => {
+    navigate(ubicacion);
   };
 
   // Crear nuevo playlist
@@ -180,6 +228,7 @@ export default function Inicial() {
         <div className="d-flex flex-row justify-content-center align-items-center w-100">
           <img src="./icono.png" alt="" width="100rem" />
           <img
+            onClick={() => setSeccionActiva("video")}
             src="./logo.png"
             alt=""
             className="img-fluid w-40 w-sm-75 w-md-30 w-lg-25"
@@ -188,19 +237,35 @@ export default function Inicial() {
 
         <div className="d-flex flex-row justify-content-center align-items-center w-100 flex-wrap gap-2">
           <div className="d-flex flex-row flex-md-column flex-wrap justify-content-center gap-1">
-            <button className="boton-personalizado rojo">Buscador</button>
+            <button
+              className="boton-personalizado rojo"
+              onClick={() => setSeccionActiva("buscador")}
+            >
+              Buscador
+            </button>
             <button
               className="boton-personalizado verde"
-              onClick={() => setShowModal(true)}
+              onClick={() => setSeccionActiva("playlist")}
             >
               PlayList
             </button>
             <button className="boton-personalizado rojo">Lo más cantado</button>
-            <button className="boton-personalizado verde">Favoritos</button>
-            <button className="boton-personalizado rojo">
+            <button
+              className="boton-personalizado verde"
+              onClick={() => setSeccionActiva("favoritos")}
+            >
+              Favoritos
+            </button>
+            <button
+              onClick={() => setSeccionActiva("listaCanciones")}
+              className="boton-personalizado rojo"
+            >
               Lista de Canciones
             </button>
-            <button className="boton-personalizado verde">
+            <button
+              className="boton-personalizado verde"
+              onClick={() => setSeccionActiva("sugerirCanciones")}
+            >
               Sugerir Canciones
             </button>
             <button className="boton-personalizado rojo">
@@ -208,17 +273,22 @@ export default function Inicial() {
             </button>
           </div>
 
-          <div className="flex-grow-1">
-            <VideoPlayer
-              cola={cola}
-              currentIndex={currentIndex}
-              setCurrentIndex={setCurrentIndex}
-            />
-          </div>
+          <div className="flex-grow-1"> {renderContenido()}</div>
 
           <div className="d-flex flex-row flex-md-column flex-wrap justify-content-center gap-2">
-            <button className="boton-personalizado rojo">Ingresar</button>
-            <button className="boton-personalizado verde">Listado PDF</button>
+            <button
+              className="boton-personalizado rojo"
+              onClick={() => setSeccionActiva("ingresar")}
+            >
+              Ingresar
+            </button>
+            <button className="boton-personalizado verde"
+                            onClick={() => setSeccionActiva("listadoPdf")} > 
+Listado PDF</button>
+
+
+            
+
             <button className="boton-personalizado rojo">Calificación</button>
             <button className="boton-personalizado verde">Suscribir</button>
             <button className="boton-personalizado rojo">Ayuda</button>
@@ -236,7 +306,7 @@ export default function Inicial() {
               onClick={() => setCurrentIndex(index)}
               className="song-icon position-relative"
               style={{ cursor: "pointer" }}
-              o
+              
             >
               <FaCompactDisc size={40} className="mb-1 text-primary" />
               <div className="custom-tooltip">
@@ -256,19 +326,6 @@ export default function Inicial() {
           onAgregarCancion={insertarCancion}
         />
       </div>
-
-      {showModal && (
-        <PlaylistModal
-          playlists={playlists}
-          onSelect={(playlist) => {
-            setSelectedPlaylist(playlist);
-            cargarPlaylistACola(playlist._id);
-            setShowModal(false);
-          }}
-          onAdd={handleAddPlaylist}
-          onClose={() => setShowModal(false)}
-        />
-      )}
     </>
   );
 }

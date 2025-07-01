@@ -94,46 +94,70 @@ export default function CancionCRUD() {
   return (
     <div className="p-2">
       <h2>Gestión de Canciones</h2>
-      <button className="btn btn-primary mb-3" onClick={() => handleOpenModal()}>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => handleOpenModal()}
+      >
         + Crear Canción
       </button>
 
       {canciones.length === 0 && <p>No hay canciones registradas.</p>}
-      <div className="row">
-        {canciones.map((cancion) => (
-          <div className="col-md-4 mb-3" key={cancion._id}>
-            <div className="card h-100">
-              <div className="card-body">
-                <h5 className="card-title">{cancion.titulo}</h5>
-                <p className="card-text">Artista: {cancion.artista}</p>
-                <p className="card-text">
-                  Géneros:{" "}
-                  {cancion.generos.map((g) => g.nombre).join(", ")}
-                </p>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
+          <tr>
+            <th>Título</th>
+            <th>Artista</th>
+            <th>Géneros</th>
+            <th>Video</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {canciones.map((cancion) => (
+            <tr key={cancion._id}>
+              <td>{cancion.titulo}</td>
+              <td>{cancion.artista}</td>
+              <td>{cancion.generos.map((g) => g.nombre).join(", ")}</td>
+              <td>
                 <a href={cancion.videoUrl} target="_blank" rel="noreferrer">
                   Ver Video
                 </a>
-              </div>
-              <div className="card-footer d-flex justify-content-between">
-                <button className="btn btn-warning btn-sm" onClick={() => handleOpenModal(cancion)}>
-                  Editar
-                </button>
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(cancion._id)}>
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+              </td>
+              <td>
+                <div className="d-flex gap-2">
+                  <button
+                    className="btn btn-warning btn-sm"
+                    onClick={() => handleOpenModal(cancion)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(cancion._id)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* Modal */}
       <div className="modal fade" id="cancionModal" tabIndex="-1">
         <div className="modal-dialog">
           <form className="modal-content" onSubmit={handleSubmit}>
             <div className="modal-header">
-              <h5 className="modal-title">{editId ? "Editar Canción" : "Crear Canción"}</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" id="cerrarModalCancion" />
+              <h5 className="modal-title">
+                {editId ? "Editar Canción" : "Crear Canción"}
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                id="cerrarModalCancion"
+              />
             </div>
             <div className="modal-body">
               <div className="mb-3">
@@ -153,7 +177,9 @@ export default function CancionCRUD() {
                   className="form-control"
                   required
                   value={form.artista}
-                  onChange={(e) => setForm({ ...form, artista: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, artista: e.target.value })
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -163,7 +189,10 @@ export default function CancionCRUD() {
                   className="form-select"
                   value={form.generos}
                   onChange={(e) => {
-                    const selected = Array.from(e.target.selectedOptions, (option) => option.value);
+                    const selected = Array.from(
+                      e.target.selectedOptions,
+                      (option) => option.value
+                    );
                     setForm({ ...form, generos: selected });
                   }}
                 >
@@ -180,7 +209,9 @@ export default function CancionCRUD() {
                   type="url"
                   className="form-control"
                   value={form.videoUrl}
-                  onChange={(e) => setForm({ ...form, videoUrl: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, videoUrl: e.target.value })
+                  }
                 />
               </div>
             </div>

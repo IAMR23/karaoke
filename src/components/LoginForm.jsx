@@ -63,9 +63,9 @@ function LoginForm({ setAuth }) {
   };
 
   return (
-    <div className="d-flex vh-100 justify-content-center align-items-center bg-light">
+    <div className="d-flex justify-content-center align-items-center h-full">
       <div className="card shadow mx-2" style={{ maxWidth: "400px", width: "100%" }}>
-        <div className="card-body">
+        <div className="card-body bg-primary text-white">
           <h2 className="card-title text-center mb-4">Iniciar Sesión</h2>
 
           {error && <p className="text-danger text-center">{error}</p>}
@@ -103,7 +103,7 @@ function LoginForm({ setAuth }) {
 
             <button
               type="submit"
-              className="btn btn-primary w-100"
+              className="btn btn-dark  w-100"
               disabled={loading}
             >
               {loading ? "Ingresando..." : "Ingresar"}

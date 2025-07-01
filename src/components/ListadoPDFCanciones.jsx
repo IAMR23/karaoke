@@ -1,0 +1,55 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
+const ListadoPDFCanciones = () => {
+  const [canciones, setCanciones] = useState([]);
+
+  useEffect(() => {
+    obtenerCanciones();
+  }, []);
+
+  const obtenerCanciones = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/song");
+      setCanciones(res.data);
+    } catch (error) {
+      console.error("Error al obtener canciones:", error);
+    }
+  };
+
+  const generarPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Listado de Canciones", 14, 10);
+
+    const data = canciones.map((cancion, index) => [
+      index + 1,
+      cancion.artista || "Sin artista",
+      cancion.titulo || "Sin título",
+      Array.isArray(cancion.generos)
+        ? cancion.generos.map((g) => g.nombre || g).join(", ")
+        : "Sin género",
+    ]);
+
+    autoTable(doc, {
+      head: [["Nº", "Artista", "Título", "Género"]],
+      body: data,
+      startY: 20,
+    });
+
+    doc.save("listado_canciones.pdf");
+  };
+
+  return (
+    <div className="container my-4">
+      <div className="text-center">
+        <button className="btn btn-danger mb-3" onClick={generarPDF}>
+          Descargar PDF
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ListadoPDFCanciones;
