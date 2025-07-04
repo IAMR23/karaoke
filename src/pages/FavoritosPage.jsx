@@ -29,7 +29,6 @@ const FavoritosPage = () => {
       setCargando(true);
       const res = await axios.get(`${API_URL}/${userId}`, { headers });
       setCanciones(res.data?.canciones || []);
-      console.log();
     } catch (err) {
       setCanciones(res.data?.canciones || []);
       console.error("Error al obtener favoritos:", err);

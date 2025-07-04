@@ -17,7 +17,6 @@ export const createDepartamento = async (departamentoData) => {
 
 export async function obtenerDepartamentosPorArrendador(userId) {
   try {
-    console.log("CP1", userId);
     const response = await axios.get(`/departamentos/arrendador/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -40,7 +39,6 @@ export async function obtenerDepartamento(id) {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log(response);
 
     return response;
   } catch (error) {
@@ -86,7 +84,6 @@ export async function obtenerDepartamentosPorVerificar() {
       "Error al decodificar el token o al hacer la solicitud:",
       error
     );
-    console.log(error);
     throw new Error("Error al obtener los departamentos");
   }
 }
@@ -104,7 +101,6 @@ export async function obtenerDepartamentos() {
       "Error al decodificar el token o al hacer la solicitud:",
       error
     );
-    console.log(error);
     throw new Error("Error al obtener los departamentos");
   }
 }

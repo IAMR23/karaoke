@@ -1,10 +1,10 @@
 import React from 'react'
-import PromocionForm from '../components/PromocionForm'
+import PublicacionesCrud from './PublicacionesCrud'
 
 export default function PromocionesPage() {
   return (
     <div>
-      <PromocionForm />
+     <PublicacionesCrud/>
     </div>
   )
 }

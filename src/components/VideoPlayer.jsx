@@ -12,20 +12,6 @@ export default function VideoPlayer({ cola = [], currentIndex, setCurrentIndex }
 
   const currentVideo = playlist[currentIndex];
 
-  // const nextVideo = () => {
-  //   if (currentIndex < playlist.length - 1) {
-  //     setCurrentIndex((prev) => prev + 1);
-  //     setShowNextMessage(false);
-  //   }
-  // };
-
-  // const prevVideo = () => {
-  //   if (currentIndex > 0) {
-  //     setCurrentIndex((prev) => prev - 1);
-  //     setShowNextMessage(false);
-  //   }
-  // };
-
   const nextVideo = () => {
   if (currentIndex < cola.length - 1) {
     setCurrentIndex(currentIndex + 1);

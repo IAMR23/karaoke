@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import SolicitudesCancion from "./SolicitudCancion";
 import LoginForm from "../components/LoginForm";
 import ListadoPDFCanciones from "../components/ListadoPDFCanciones";
+import AyudaPage from "./AyudaPage";
 
 export default function Inicial() {
   const [cola, setCola] = useState([]);
@@ -73,7 +74,7 @@ export default function Inicial() {
       case "suscribir":
         return <ListaCanciones />;
       case "ayuda":
-        return <ListaCanciones />;
+        return <AyudaPage />;
       case "galeriaOtros":
         return <ScannerCelular />;
       case "tv":
@@ -291,9 +292,11 @@ Listado PDF</button>
 
             <button className="boton-personalizado rojo">Calificación</button>
             <button className="boton-personalizado verde">Suscribir</button>
-            <button className="boton-personalizado rojo">Ayuda</button>
+            <button className="boton-personalizado rojo"
+                                        onClick={() => setSeccionActiva("ayuda")} > 
+
+Ayuda</button>
             <button className="boton-personalizado verde">Galería Otros</button>
-            <button className="boton-personalizado rojo">TV Smart</button>
           </div>
         </div>
 

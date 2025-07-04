@@ -118,8 +118,8 @@ function LoginForm({ setAuth }) {
           )}
 
           {/* Enlace para registrarse */}
-          <div className="text-center mt-3">
-            <a href="/registro" className="text-decoration-none">
+          <div className="text-center mt-3 ">
+            <a href="/registro" className="text-decoration-none text-white">
               ¿No tienes cuenta? Regístrate
             </a>
           </div>
