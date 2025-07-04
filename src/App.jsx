@@ -72,6 +72,7 @@ function App() {
             <Route path="/login" element={<LoginForm setAuth={setAuth} />} />
             <Route path="/registro" element={<RegistrationForm />} />
           
+          
           </Routes>
         </main>
         <Footer />
