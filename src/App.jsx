@@ -11,8 +11,7 @@ import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 
 import Inicial from "./pages/Inicial";
-import Planes from "./pages/Planes";
-import React from "react";
+
 import AnunciosCRUD from "./pages/AnunciosCrud";
 import CancionesCRUD from "./pages/CancionesCrud";
 import GeneroCRUD from "./pages/GeneroCrud";
@@ -23,6 +22,9 @@ import UsuariosPage from "./pages/UsuariosPage";
 import SolicitudesCancion from "./pages/SolicitudCancion";
 import ListaCanciones from "./components/ListaCanciones";
 import PublicacionesCrud from "./pages/PublicacionesCrud";
+import Productos from "./components/Productos";
+import ProductoDetalle from "./components/ProductoDetalle";
+import PlanTest from "./components/PlanTest";
 
 function App() {
   // 🔹 Estado global de autenticación
@@ -57,6 +59,8 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="promociones" element={<PromocionesPage />} />
               <Route path="usuarios" element={<UsuariosPage />} />
+              <Route path="productos" element={<Productos />} />
+              <Route path="producto/:id" element={<ProductoDetalle />} />
             </Route>
             <Route path="favoritos" element={<FavoritosPage />} />
             {/* Son las funcionalidades de los botones */}
@@ -65,7 +69,7 @@ function App() {
             <Route path="test" element={<PublicacionesCrud />} />
 
             <Route index="/" element={<Inicial />} />
-            <Route path="/planes" element={<Planes />} />
+            <Route path="/planes" element={<PlanTest />} />
             <Route path="/propiedad/:id" element={<PropertyDetail />} />
             <Route path="/buscar" element={<SearchResults />} />
             {/* 🔹 Pasamos setAuth a LoginForm para actualizar estado tras login */}

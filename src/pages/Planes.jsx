@@ -1,4 +1,8 @@
 import React from "react";
+import Paypal from "../components/Paypal";
+import PaypalSuscripcion from "../components/PaypalSuscripcion";
+import PlanesActivos from "../components/PlanesActivos";
+import PlantTest from "../components/PlanTest";
 
 export default function Planes() {
   return (
@@ -127,7 +131,8 @@ export default function Planes() {
                   href="/workspace/upgrade"
                   className="btn btn-primary w-100 mt-3"
                 >
-                  Deploy with Hobby
+                  Deploy with Hobby 
+                  <Paypal/>
                 </a>
               </div>
             </div>
@@ -272,13 +277,16 @@ export default function Planes() {
                   </li>
                 </ul>
                 <button className="btn btn-primary w-100 mt-3">
-                  Deploy with Pro
+                  <PaypalSuscripcion /> 
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <PlantTest/>
+
     </div>
   );
 }

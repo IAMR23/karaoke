@@ -1,0 +1,178 @@
+import React, { useEffect, useState } from "react";
+import PaypalSuscripcion from "./PaypalSuscripcion";
+import axios from "axios";
+
+const PlantTest = () => {
+  const [productos, setProductos] = useState([]);
+  const [loadingProductos, setLoadingProductos] = useState(true);
+  const [errorProductos, setErrorProductos] = useState(null);
+
+  const [paypalProductId, setPaypalProductId] = useState(null);
+
+  const [planesActivos, setPlanesActivos] = useState([]);
+  const [loadingPlanes, setLoadingPlanes] = useState(false);
+  const [errorPlanes, setErrorPlanes] = useState(null);
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Fetch productos
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        setLoadingProductos(true);
+        setErrorProductos(null);
+
+        const res = await axios.get(
+          "http://localhost:5000/paypal/producto-local"
+        );
+        setProductos(res.data);
+        if (res.data.length > 0) {
+          setPaypalProductId(res.data[0].paypalProductId);
+        }
+      } catch (err) {
+        setErrorProductos("Error al cargar productos");
+        console.error(err);
+      } finally {
+        setLoadingProductos(false);
+      }
+    };
+
+    fetchProductos();
+  }, []);
+
+  // Fetch planes activos cuando paypalProductId cambia
+  useEffect(() => {
+    if (!paypalProductId) return;
+
+    const fetchPlanesActivos = async (id) => {
+      try {
+        setLoadingPlanes(true);
+        setErrorPlanes(null);
+
+        const response = await axios.get(
+          `http://localhost:5000/paypal/planes/${id}`
+        );
+        const todosLosPlanes = response.data || [];
+
+        const activos = todosLosPlanes.filter(
+          (plan) => plan.status === "ACTIVE"
+        );
+        setPlanesActivos(activos);
+      } catch (err) {
+        setErrorPlanes("No se pudieron obtener los planes activos.");
+        setPlanesActivos([]);
+        console.error("Error al obtener planes activos:", err);
+      } finally {
+        setLoadingPlanes(false);
+      }
+    };
+
+    fetchPlanesActivos(paypalProductId);
+  }, [paypalProductId]);
+
+  // Render
+
+  if (loadingProductos) return <p>Cargando productos...</p>;
+  if (errorProductos) return <p>{errorProductos}</p>;
+
+  return (
+    <div className="p-2">
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      {loading ? (
+        <div className="text-light">Cargando planes activos...</div>
+      ) : planesActivos.length === 0 ? (
+        <div className="text-light">
+          No hay planes activos para este producto.
+        </div>
+      ) : (
+        <div className="container">
+          <div className="row g-4 justify-content-center">
+            {planesActivos.map((plan, index) => {
+              const ciclo = plan.billing_cycles?.[0];
+              const frecuencia = ciclo?.frequency
+                ? `${ciclo.frequency.interval_unit} x${ciclo.frequency.interval_count}`
+                : "—";
+
+              const precioValor =
+                ciclo?.pricing_scheme?.fixed_price?.value || "—";
+              const precioMoneda =
+                ciclo?.pricing_scheme?.fixed_price?.currency_code || "";
+
+              // Alternar color de borde (puedes personalizar esto más)
+              const borderColor = index % 2 === 0 ? "primary" : "danger";
+
+              return (
+                <div className="col-12 col-lg-6" key={plan.id}>
+                  <div className={`card border-${borderColor} bg-dark h-100`}>
+                    <div className="card-body d-flex flex-column">
+                      <div className="text-light">
+                        <h3 className="fw-bold">{plan.name}</h3>
+                        <p>
+                          {plan.description || "Sin descripción disponible."}
+                        </p>
+                      </div>
+
+                      <div className="mt-auto">
+                        <div className="d-flex align-items-center mb-2">
+                          <span className="fs-3">{precioMoneda}</span>
+                          <span className="display-1 fw-semibold">
+                            {precioValor}
+                          </span>
+                          <span className="fs-2">/ {frecuencia}</span>
+                        </div>
+
+                        <ul className="list-unstyled text-light">
+                          <li className="d-flex align-items-center mb-2">
+                            <svg
+                              className="me-2"
+                              width="20"
+                              height="20"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M20 6 9 17l-5-5"></path>
+                            </svg>
+                            Ciclo de facturación: {frecuencia}
+                          </li>
+                          <li className="d-flex align-items-center">
+                            <svg
+                              className="me-2"
+                              width="20"
+                              height="20"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M20 6 9 17l-5-5"></path>
+                            </svg>
+                            Precio: {precioValor} {precioMoneda}
+                            <span className="badge bg-primary ms-2">New!</span>
+                          </li>
+                        </ul>
+
+                        <button className="btn btn-primary w-100 mt-3">
+                          <PaypalSuscripcion planId={plan.id} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PlantTest;
