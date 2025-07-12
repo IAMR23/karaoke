@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userServices";
 import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../utils/AuthContext";
 
-function LoginForm({ setAuth }) {
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
-
+function LoginForm() {
+  const { setAuth } = useContext(AuthContext);
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -23,7 +21,6 @@ function LoginForm({ setAuth }) {
     setLoading(true);
     setError(null);
 
-    // Validación básica
     if (!credentials.email || !credentials.password) {
       setError("Por favor completa todos los campos.");
       setLoading(false);
@@ -34,14 +31,18 @@ function LoginForm({ setAuth }) {
       const response = await loginUser(credentials);
       localStorage.setItem("token", response.token);
 
-      const decodedToken = jwtDecode(response.token);
-      const userRole = decodedToken.rol;
+      const decoded = jwtDecode(response.token);
+      const userRole = decoded.rol;
+      const userId = decoded.userId;
 
       localStorage.setItem("rol", userRole);
 
-      if (setAuth) {
-        setAuth({ isAuthenticated: true, rol: userRole });
-      }
+      // ✅ Establece el estado de autenticación global
+      setAuth({
+        isAuthenticated: true,
+        rol: userRole,
+        userId: userId,
+      });
 
       // Redirigir según el rol
       if (userRole === "admin") {
@@ -50,7 +51,6 @@ function LoginForm({ setAuth }) {
         navigate("/");
       }
 
-      // Limpiar formulario (opcional)
       setCredentials({ email: "", password: "" });
 
     } catch (error) {
@@ -72,9 +72,7 @@ function LoginForm({ setAuth }) {
 
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
-              </label>
+              <label htmlFor="email" className="form-label">Email</label>
               <input
                 id="email"
                 type="email"
@@ -87,9 +85,7 @@ function LoginForm({ setAuth }) {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Contraseña
-              </label>
+              <label htmlFor="password" className="form-label">Contraseña</label>
               <input
                 id="password"
                 type="password"
@@ -103,22 +99,20 @@ function LoginForm({ setAuth }) {
 
             <button
               type="submit"
-              className="btn btn-dark  w-100"
+              className="btn btn-dark w-100"
               disabled={loading}
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
           </form>
 
-          {/* Spinner visual si está cargando */}
           {loading && (
             <div className="text-center mt-3">
-              <div className="spinner-border text-primary" />
+              <div className="spinner-border text-light" />
             </div>
           )}
 
-          {/* Enlace para registrarse */}
-          <div className="text-center mt-3 ">
+          <div className="text-center mt-3">
             <a href="/registro" className="text-decoration-none text-white">
               ¿No tienes cuenta? Regístrate
             </a>

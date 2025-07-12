@@ -25,6 +25,7 @@ import PublicacionesCrud from "./pages/PublicacionesCrud";
 import Productos from "./components/Productos";
 import ProductoDetalle from "./components/ProductoDetalle";
 import PlanTest from "./components/PlanTest";
+import { AuthProvider } from "./utils/AuthContext";
 
 function App() {
   // 🔹 Estado global de autenticación
@@ -46,42 +47,42 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <div>
-        {/* 🔹 Pasamos auth y setAuth a Navbar para manejar autenticación */}
-        <Navbar auth={auth} setAuth={setAuth} />
-        <main className="flex-grow w-full ">
-          <Routes>
-            <Route path="/" element={<SidebarLayout />}>
-              <Route path="anuncios" element={<AnunciosCRUD />} />
-              <Route path="canciones" element={<CancionesCRUD />} />
-              <Route path="genero" element={<GeneroCRUD />} /> 
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="promociones" element={<PromocionesPage />} />
-              <Route path="usuarios" element={<UsuariosPage />} />
-              <Route path="productos" element={<Productos />} />
-              <Route path="producto/:id" element={<ProductoDetalle />} />
-            </Route>
-            <Route path="favoritos" element={<FavoritosPage />} />
-            {/* Son las funcionalidades de los botones */}
-            <Route path="solicitud" element={<SolicitudesCancion />} />
-            <Route path="listacanciones" element={<ListaCanciones />} />
-            <Route path="test" element={<PublicacionesCrud />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <div>
+          {/* 🔹 Pasamos auth y setAuth a Navbar para manejar autenticación */}
+          <Navbar auth={auth} setAuth={setAuth} />
+          <main className="flex-grow w-full ">
+            <Routes>
+              <Route path="/" element={<SidebarLayout />}>
+                <Route path="anuncios" element={<AnunciosCRUD />} />
+                <Route path="canciones" element={<CancionesCRUD />} />
+                <Route path="genero" element={<GeneroCRUD />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="promociones" element={<PromocionesPage />} />
+                <Route path="usuarios" element={<UsuariosPage />} />
+                <Route path="productos" element={<Productos />} />
+                <Route path="producto/:id" element={<ProductoDetalle />} />
+              </Route>
+              <Route path="favoritos" element={<FavoritosPage />} />
+              {/* Son las funcionalidades de los botones */}
+              <Route path="solicitud" element={<SolicitudesCancion />} />
+              <Route path="listacanciones" element={<ListaCanciones />} />
+              <Route path="test" element={<PublicacionesCrud />} />
 
-            <Route index="/" element={<Inicial />} />
-            <Route path="/planes" element={<PlanTest />} />
-            <Route path="/propiedad/:id" element={<PropertyDetail />} />
-            <Route path="/buscar" element={<SearchResults />} />
-            {/* 🔹 Pasamos setAuth a LoginForm para actualizar estado tras login */}
-            <Route path="/login" element={<LoginForm setAuth={setAuth} />} />
-            <Route path="/registro" element={<RegistrationForm />} />
-          
-          
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
+              <Route index="/" element={<Inicial />} />
+              <Route path="/planes" element={<PlanTest />} />
+              <Route path="/propiedad/:id" element={<PropertyDetail />} />
+              <Route path="/buscar" element={<SearchResults />} />
+              {/* 🔹 Pasamos setAuth a LoginForm para actualizar estado tras login */}
+              <Route path="/login" element={<LoginForm setAuth={setAuth} />} />
+              <Route path="/registro" element={<RegistrationForm />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

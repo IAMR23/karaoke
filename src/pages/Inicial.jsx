@@ -63,7 +63,7 @@ export default function Inicial() {
       case "sugerirCanciones":
         return <SolicitudesCancion />;
       case "scanner":
-        return <ScannerCelular />;
+        return <ScannerCelular />; 
 
       case "ingresar":
         return <LoginForm />;

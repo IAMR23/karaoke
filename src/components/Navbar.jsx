@@ -1,19 +1,21 @@
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
-export default function Navbar({ auth  , setAuth}) {
+import { AuthContext } from "../utils/AuthContext";
 
-   const navigate = useNavigate();
+export default function Navbar() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.clear();                    // Limpia almacenamiento
-    setAuth({ isAuthenticated: false, rol: null }); // Actualiza estado global
-    navigate("/");                           // Redirige al inicio
+    localStorage.clear();
+    setAuth({ isAuthenticated: false, rol: null, userId: null });
+    navigate("/");
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-4">
       <div className="container-fluid">
-        {/* Botón hamburguesa alineado a la derecha */}
         <button
           className="navbar-toggler ms-auto"
           type="button"
@@ -23,15 +25,10 @@ export default function Navbar({ auth  , setAuth}) {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Contenido colapsable */}
-        <div
-          className="collapse navbar-collapse justify-content-center"
-          id="mainNavbar"
-        >
+        <div className="collapse navbar-collapse justify-content-center" id="mainNavbar">
           <ul className="navbar-nav d-flex flex-wrap align-items-center gap-3">
             <li className="nav-item">
               <Link className="nav-link" to="/planes">
@@ -56,9 +53,7 @@ export default function Navbar({ auth  , setAuth}) {
             {!auth.isAuthenticated && (
               <>
                 {/* <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li> */}
                 <li className="nav-item">
                   <Link className="nav-link" to="/registro">
@@ -75,8 +70,6 @@ export default function Navbar({ auth  , setAuth}) {
                 </Link>
               </li>
             )}
-
-          
 
             {auth.isAuthenticated && (
               <li className="nav-item">

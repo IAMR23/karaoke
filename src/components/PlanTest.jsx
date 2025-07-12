@@ -13,9 +13,6 @@ const PlantTest = () => {
   const [loadingPlanes, setLoadingPlanes] = useState(false);
   const [errorPlanes, setErrorPlanes] = useState(null);
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
   // Fetch productos
   useEffect(() => {
     const fetchProductos = async () => {
@@ -23,10 +20,9 @@ const PlantTest = () => {
         setLoadingProductos(true);
         setErrorProductos(null);
 
-        const res = await axios.get(
-          "http://localhost:5000/paypal/producto-local"
-        );
+        const res = await axios.get("http://localhost:5000/paypal/producto-local");
         setProductos(res.data);
+
         if (res.data.length > 0) {
           setPaypalProductId(res.data[0].paypalProductId);
         }
@@ -50,14 +46,10 @@ const PlantTest = () => {
         setLoadingPlanes(true);
         setErrorPlanes(null);
 
-        const response = await axios.get(
-          `http://localhost:5000/paypal/planes/${id}`
-        );
+        const response = await axios.get(`http://localhost:5000/paypal/planes/${id}`);
         const todosLosPlanes = response.data || [];
 
-        const activos = todosLosPlanes.filter(
-          (plan) => plan.status === "ACTIVE"
-        );
+        const activos = todosLosPlanes.filter((plan) => plan.status === "ACTIVE");
         setPlanesActivos(activos);
       } catch (err) {
         setErrorPlanes("No se pudieron obtener los planes activos.");
@@ -73,19 +65,20 @@ const PlantTest = () => {
 
   // Render
 
-  if (loadingProductos) return <p>Cargando productos...</p>;
-  if (errorProductos) return <p>{errorProductos}</p>;
+  if (loadingProductos) return <p className="text-light">Cargando productos...</p>;
+  if (errorProductos) return <p className="text-danger">{errorProductos}</p>;
 
   return (
     <div className="p-2">
-      {error && <div className="alert alert-danger">{error}</div>}
+      {errorPlanes && <div className="alert alert-danger">{errorPlanes}</div>}
 
-      {loading ? (
-        <div className="text-light">Cargando planes activos...</div>
-      ) : planesActivos.length === 0 ? (
-        <div className="text-light">
-          No hay planes activos para este producto.
+      {loadingPlanes ? (
+        <div className="text-center text-light my-4">
+          <div className="spinner-border text-primary" role="status"></div>
+          <p className="mt-2">Cargando planes activos...</p>
         </div>
+      ) : planesActivos.length === 0 ? (
+        <div className="text-light">No hay planes activos para este producto.</div>
       ) : (
         <div className="container">
           <div className="row g-4 justify-content-center">
@@ -95,12 +88,9 @@ const PlantTest = () => {
                 ? `${ciclo.frequency.interval_unit} x${ciclo.frequency.interval_count}`
                 : "—";
 
-              const precioValor =
-                ciclo?.pricing_scheme?.fixed_price?.value || "—";
-              const precioMoneda =
-                ciclo?.pricing_scheme?.fixed_price?.currency_code || "";
+              const precioValor = ciclo?.pricing_scheme?.fixed_price?.value || "—";
+              const precioMoneda = ciclo?.pricing_scheme?.fixed_price?.currency_code || "";
 
-              // Alternar color de borde (puedes personalizar esto más)
               const borderColor = index % 2 === 0 ? "primary" : "danger";
 
               return (
@@ -109,17 +99,13 @@ const PlantTest = () => {
                     <div className="card-body d-flex flex-column">
                       <div className="text-light">
                         <h3 className="fw-bold">{plan.name}</h3>
-                        <p>
-                          {plan.description || "Sin descripción disponible."}
-                        </p>
+                        <p>{plan.description || "Sin descripción disponible."}</p>
                       </div>
 
                       <div className="mt-auto">
                         <div className="d-flex align-items-center mb-2">
                           <span className="fs-3">{precioMoneda}</span>
-                          <span className="display-1 fw-semibold">
-                            {precioValor}
-                          </span>
+                          <span className="display-1 fw-semibold">{precioValor}</span>
                           <span className="fs-2">/ {frecuencia}</span>
                         </div>
 
