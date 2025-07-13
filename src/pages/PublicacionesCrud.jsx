@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
 
-const API_URL = "http://localhost:5000/publicacion";
+
+  const API_URL2 = import.meta.env.VITE_API_URL;
+
+
+
+const API_URL = `${API_URL2}/publicacion`;
 
 const PublicacionesCrud = () => {
   const [publicaciones, setPublicaciones] = useState([]);

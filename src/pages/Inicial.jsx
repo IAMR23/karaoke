@@ -19,6 +19,9 @@ import ListadoPDFCanciones from "../components/ListadoPDFCanciones";
 import AyudaPage from "./AyudaPage";
 
 export default function Inicial() {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
   const [cola, setCola] = useState([]);
   const [userId, setUserId] = useState(null);
   const [playlists, setPlaylists] = useState([]);
@@ -114,7 +117,7 @@ export default function Inicial() {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.post(
-        "http://localhost:5000/t/playlist",
+        `${API_URL}/t/playlist`,
         { nombre: name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -145,7 +148,7 @@ export default function Inicial() {
         const cargarPlaylists = async () => {
           try {
             const res = await axios.get(
-              `http://localhost:5000/t/playlist/${userIdDecoded}`,
+              `${API_URL}/t/playlist/${userIdDecoded}`,
               {
                 headers: { Authorization: `Bearer ${token}` },
               }
@@ -169,7 +172,7 @@ export default function Inicial() {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.get(
-        `http://localhost:5000/t/playlist/canciones/${playlistId}`,
+        `${API_URL}/t/playlist/canciones/${playlistId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -186,12 +189,12 @@ export default function Inicial() {
   const insertarCancion = async (songId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:5000/song/${songId}`);
+      const res = await axios.get(`${API_URL}/song/${songId}`);
       const nuevaCancion = res.data;
 
       if (modoReproduccion === "cola") {
         await axios.post(
-          "http://localhost:5000/t/cola/add",
+          `${API_URL}/t/cola/add`,
           { songId },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -212,7 +215,7 @@ export default function Inicial() {
     const token = localStorage.getItem("token");
     if (!token || !userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/t/cola/${userId}`, {
+      const res = await axios.get(`${API_URL}/t/cola/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCola(res.data?.canciones || []);

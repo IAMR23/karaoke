@@ -9,6 +9,8 @@ import "../styles/disco.css";
 import { useNavigate } from "react-router-dom";
 
 export default function ListaCanciones() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [cola, setCola] = useState([]);
   const [userId, setUserId] = useState(null);
   const [playlists, setPlaylists] = useState([]);
@@ -40,7 +42,7 @@ export default function ListaCanciones() {
     const token = localStorage.getItem("token");
     try {
       const res = await axios.post(
-        "http://localhost:5000/t/playlist",
+        `${API_URL}/t/playlist`,
         { nombre: name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -112,12 +114,12 @@ export default function ListaCanciones() {
   const insertarCancion = async (songId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:5000/song/${songId}`);
+      const res = await axios.get(`${API_URL}/song/${songId}`);
       const nuevaCancion = res.data;
 
       if (modoReproduccion === "cola") {
         await axios.post(
-          "http://localhost:5000/t/cola/add",
+          `${API_URL}/t/cola/add`,
           { songId },
           {
             headers: { Authorization: `Bearer ${token}` },

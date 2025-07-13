@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiEdit, FiTrash2, FiEye, FiEyeOff } from "react-icons/fi";
 
-const API_URL = "http://localhost:5000/anuncio";
+
+
+
+  const API_URL2 = import.meta.env.VITE_API_URL;
+
+const API_URL = `${API_URL2}/anuncio`;
 
 export default function AnunciosCRUD() {
   const [anuncios, setAnuncios] = useState([]);
@@ -19,7 +24,7 @@ export default function AnunciosCRUD() {
 
   const fetchAnuncios = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/anuncio");
+      const res = await axios.get(`${API_URL}/anuncio`);
       setAnuncios(res.data);
     } catch (err) {
       console.error("Error al obtener anuncios", err);

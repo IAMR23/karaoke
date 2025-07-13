@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/song";
-const GENEROS_URL = "http://localhost:5000/genero";
+    const API_URL2 = import.meta.env.VITE_API_URL;
+
+
+
+const API_URL = `${API_URL2}/song`;
+const GENEROS_URL = `${API_URL2}/genero`;
 
 export default function CancionCRUD() {
   const [canciones, setCanciones] = useState([]);

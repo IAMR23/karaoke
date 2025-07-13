@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const UsuariosPage = () => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+
   const [usuarios, setUsuarios] = useState([]);
   const [filtroSuscripcion, setFiltroSuscripcion] = useState("todos");
 
@@ -11,7 +15,7 @@ const UsuariosPage = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/users");
+      const res = await axios.get(`${API_URL}/users`);
       setUsuarios(res.data.user);
     } catch (err) {
       console.error("Error al obtener usuarios:", err);

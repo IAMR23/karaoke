@@ -2,6 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 
 function PromocionForm() {
+
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     titulo: "",
     descripcion: "",
@@ -47,7 +51,7 @@ function PromocionForm() {
 
     const createPromocion = async (formData) => {
       const res = await axios.post(
-        "http://localhost:5000/api/promociones",
+        `${API_URL}/api/promociones`,
         formData,
         {
           headers: {

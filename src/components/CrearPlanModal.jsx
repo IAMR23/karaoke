@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CrearPlanModal = ({ show, onClose, productId, onPlanCreado }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [form, setForm] = useState({
     nombre: "",
     descripcion: "",
@@ -22,7 +24,7 @@ const CrearPlanModal = ({ show, onClose, productId, onPlanCreado }) => {
     setError("");
     setLoading(true);
     try {
-      await axios.post(`http://localhost:5000/paypal/producto/${productId}/plan`, {
+      await axios.post(`${API_URL}/paypal/producto/${productId}/plan`, {
         ...form,
         precio: parseFloat(form.precio),
         duracionDias: parseInt(form.duracionDias),

@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Productos = () => {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
   const [productos, setProductos] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -16,7 +19,7 @@ const Productos = () => {
 
   const cargarProductos = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/paypal/productos");
+      const res = await axios.get(`${API_URL}/paypal/productos`);
       setProductos(res.data);
     } catch (err) {
       console.error("Error al cargar productos:", err);
@@ -36,7 +39,7 @@ const Productos = () => {
     e.preventDefault();
     setError("");
     try {
-      await axios.post("http://localhost:5000/paypal/crear-producto", form);
+      await axios.post(`${API_URL}/paypal/crear-producto`, form);
       setForm({
         name: "",
         description: "",

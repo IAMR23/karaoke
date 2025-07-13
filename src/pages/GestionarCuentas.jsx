@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 
 function GestionarCuentas() {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+
   const [arrendadoresPendientes, setArrendadoresPendientes] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -9,7 +13,7 @@ function GestionarCuentas() {
     try {
       const token = localStorage.getItem("token"); // Obtén el token de autenticación si es necesario
       const response = await fetch(
-        "http://localhost:5000/arrendadores/verificacion",
+        `${API_URL}/arrendadores/verificacion`,
         {
           method: "GET",
           headers: {

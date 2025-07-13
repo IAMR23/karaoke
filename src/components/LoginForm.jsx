@@ -5,6 +5,8 @@ import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../utils/AuthContext";
 
 function LoginForm() {
+    const API_URL = import.meta.env.VITE_API_URL;
+
   const { setAuth } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);

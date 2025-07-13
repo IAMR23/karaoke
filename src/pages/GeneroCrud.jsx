@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
-const API_URL = "http://localhost:5000/genero";
+
+  const API_URL2 = import.meta.env.VITE_API_URL;
+
+
+const API_URL = `${API_URL2}/genero`;
 
 export default function GeneroCRUD() {
   const [generos, setGeneros] = useState([]);

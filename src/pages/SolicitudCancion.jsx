@@ -11,8 +11,13 @@ const SolicitudesCancion = () => {
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
 
-  const API_SOLICITUD = "http://localhost:5000/solicitud";
-  const API_USER = "http://localhost:5000/users"; // Ajusta si tienes prefijo /api
+
+    const API_URL2 = import.meta.env.VITE_API_URL;
+
+
+
+  const API_SOLICITUD = `${API_URL2}/solicitud`;
+  const API_USER = `${API_URL2}/users`; // Ajusta si tienes prefijo /api
 
   useEffect(() => {
     const token = localStorage.getItem("token");

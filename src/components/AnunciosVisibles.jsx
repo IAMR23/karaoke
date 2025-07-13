@@ -5,10 +5,11 @@ const AnunciosVisibles = () => {
   const [anuncios, setAnuncios] = useState([]);
   const [error, setError] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchAnuncios = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/anuncio/visible");
+        const res = await axios.get(`${API_URL}/anuncio/visible`);
         setAnuncios(res.data);
       } catch (err) {
         setError("Error al cargar los anuncios");

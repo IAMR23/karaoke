@@ -3,16 +3,20 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-export default function PlanesActivos({id}) {
+export default function PlanesActivos({ id }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [planesActivos, setPlanesActivos] = useState([]);
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchPlanesActivos = async () => {
     try {
       setError("");
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/paypal/planes/${id}`);
+      const response = await axios.get(
+        `http://localhost:5000/paypal/planes/${id}`
+      );
       const todosLosPlanes = response.data || [];
 
       const activos = todosLosPlanes.filter((plan) => plan.status === "ACTIVE");
@@ -59,8 +63,10 @@ export default function PlanesActivos({id}) {
                 ? `${ciclo.frequency.interval_unit} x${ciclo.frequency.interval_count}`
                 : "—";
 
-              const precioValor = ciclo?.pricing_scheme?.fixed_price?.value || "—";
-              const precioMoneda = ciclo?.pricing_scheme?.fixed_price?.currency_code || "";
+              const precioValor =
+                ciclo?.pricing_scheme?.fixed_price?.value || "—";
+              const precioMoneda =
+                ciclo?.pricing_scheme?.fixed_price?.currency_code || "";
 
               return (
                 <tr key={plan.id}>

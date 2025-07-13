@@ -7,6 +7,8 @@ function Message({ content }) {
 }
 
 function PaypalSuscripcion({ planId }) {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   let userId = null;
   let isAuthenticated = false;
   try {
@@ -60,7 +62,7 @@ function PaypalSuscripcion({ planId }) {
               const token = localStorage.getItem("token"); // o como guardes tu JWT
 
               const res = await fetch(
-                "http://localhost:5000/suscripcion/activar-suscripcion",
+                `${API_URL}/suscripcion/activar-suscripcion`,
                 {
                   method: "POST",
                   headers: {

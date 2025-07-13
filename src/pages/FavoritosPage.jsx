@@ -3,7 +3,11 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { BsTrash, BsXCircle } from "react-icons/bs";
 
-const API_URL = "http://localhost:5000/t/favoritos"; // ajusta según tu backend
+  const API_URL2 = import.meta.env.VITE_API_URL;
+
+
+
+const API_URL = `${API_URL2}/t/favoritos`; // ajusta según tu backend
 
 function getYoutubeThumbnail(url) {
   if (!url) return "";

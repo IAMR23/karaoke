@@ -4,6 +4,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const DepartamentoCard = () => {
+    const API_URL = import.meta.env.VITE_API_URL;
+
   const { id } = useParams(); // Obtener el ID del departamento desde la URL
   const [departamento, setDepartamento] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ const DepartamentoCard = () => {
   useEffect(() => {
     const fetchDepartamento = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/depas/${id}`);
+        const response = await axios.get(`${API_URL}/depas/${id}`);
         setDepartamento(response.data);
       } catch (error) {
         console.error("Error al obtener el departamento:", error);
@@ -55,7 +57,7 @@ const DepartamentoCard = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/comentario/${id}`,
+        `${API_URL}/comentario/${id}`,
         nuevoComentario,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

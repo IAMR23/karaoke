@@ -5,8 +5,10 @@ import { FaPlus } from "react-icons/fa";
 import PlaylistSelectorModal from "./PlaylistSelectorModal";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "http://localhost:5000/song";
-const FILTRO_URL = "http://localhost:5000/song/filtrar";
+const API_URL = import.meta.env.VITE_API_URL;
+
+const SONG_URL = `${API_URL}/song`;
+const FILTRO_URL = `${API_URL}/song/filtrar`;
 
 function getYoutubeThumbnail(videoUrl) {
   if (!videoUrl) return null;
@@ -65,7 +67,7 @@ export default function BuscadorCanciones({
         ? { Authorization: `Bearer ${localStorage.getItem("token")}` }
         : {};
 
-      const url = usarFiltro ? FILTRO_URL : API_URL;
+      const url = usarFiltro ? FILTRO_URL : SONG_URL;
       const params = usarFiltro
         ? { busqueda: filtros.busqueda, ordenFecha: filtros.ordenFecha }
         : {};
@@ -97,7 +99,7 @@ export default function BuscadorCanciones({
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/t/favoritos/add",
+        `${API_URL}/t/favoritos/add`,
         { songId },
         {
           headers: {
@@ -130,7 +132,7 @@ export default function BuscadorCanciones({
     const token = localStorage.getItem("token");
     try {
       await axios.post(
-        `http://localhost:5000/t/playlist/cancion`,
+        `${API_URL}/t/playlist/cancion`,
         {
           playlistId,
           songId: selectedSongId,
@@ -229,4 +231,4 @@ export default function BuscadorCanciones({
       </div>
     </div>
   );
-} 
+}

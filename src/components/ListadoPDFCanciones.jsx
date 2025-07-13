@@ -4,6 +4,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 const ListadoPDFCanciones = () => {
+    const API_URL = import.meta.env.VITE_API_URL;
+
   const [canciones, setCanciones] = useState([]);
 
   useEffect(() => {
@@ -12,7 +14,7 @@ const ListadoPDFCanciones = () => {
 
   const obtenerCanciones = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/song");
+      const res = await axios.get(`${API_URL}/song`);
       setCanciones(res.data);
     } catch (error) {
       console.error("Error al obtener canciones:", error);
