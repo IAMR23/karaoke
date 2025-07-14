@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userServices";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../utils/AuthContext";
- 
-function LoginForm() {
 
+function LoginForm({ onLoginSuccess }) {
   const { setAuth } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -50,13 +49,15 @@ function LoginForm() {
         navigate("/dashboard");
       } else {
         navigate("/");
+        onLoginSuccess();
       }
 
       setCredentials({ email: "", password: "" });
-
     } catch (error) {
       setError(
-        error.response?.data?.message || error.message || "Error al iniciar sesión."
+        error.response?.data?.message ||
+          error.message ||
+          "Error al iniciar sesión."
       );
     } finally {
       setLoading(false);
@@ -65,7 +66,10 @@ function LoginForm() {
 
   return (
     <div className="d-flex justify-content-center align-items-center h-full">
-      <div className="card shadow mx-2" style={{ maxWidth: "400px", width: "100%" }}>
+      <div
+        className="card shadow mx-2"
+        style={{ maxWidth: "400px", width: "100%" }}
+      >
         <div className="card-body bg-primary text-white">
           <h2 className="card-title text-center mb-4">Iniciar Sesión</h2>
 
@@ -73,7 +77,9 @@ function LoginForm() {
 
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -86,7 +92,9 @@ function LoginForm() {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">Contraseña</label>
+              <label htmlFor="password" className="form-label">
+                Contraseña
+              </label>
               <input
                 id="password"
                 type="password"

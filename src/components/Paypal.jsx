@@ -67,7 +67,7 @@ function Paypal() {
           onApprove={async (data, actions) => {
             try {
               const response = await axios.post(
-                `http://localhost:5000/paypal/api/orders/${data.orderID}/capture`
+                `${API_URL}/paypal/api/orders/${data.orderID}/capture`
               );
 
               const orderData = response.data;

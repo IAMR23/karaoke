@@ -18,7 +18,7 @@ export default function ProductoDetalle() {
       setError("");
       setLoadingPlanes(true);
       const response = await axios.get(
-        `http://localhost:5000/paypal/planes/${id}`
+        `${API_URL}/paypal/planes/${id}`
       );
       setPlanes(response.data || []);
     } catch (err) {

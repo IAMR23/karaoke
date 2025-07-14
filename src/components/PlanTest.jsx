@@ -49,7 +49,7 @@ const PlantTest = () => {
         setErrorPlanes(null);
 
         const response = await axios.get(
-          `http://localhost:5000/paypal/planes/${id}`
+          `${API_URL}/paypal/planes/${id}`
         );
         const todosLosPlanes = response.data || [];
 
@@ -82,11 +82,11 @@ const PlantTest = () => {
       {loadingPlanes ? (
         <div className="text-center text-light my-4">
           <div className="spinner-border text-primary" role="status"></div>
-          <p className="mt-2">Cargando planes activos...</p>
+          <p className="mt-2">Cargando planes...</p>
         </div>
       ) : planesActivos.length === 0 ? (
         <div className="text-light">
-          No hay planes activos para este producto.
+          No hay planes
         </div>
       ) : (
         <div className="container">

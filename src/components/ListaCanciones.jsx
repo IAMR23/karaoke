@@ -75,7 +75,7 @@ export default function ListaCanciones() {
         const cargarPlaylists = async () => {
           try {
             const res = await axios.get(
-              `http://localhost:5000/t/playlist/${userIdDecoded}`,
+              `${API_URL}/t/playlist/${userIdDecoded}`,
               {
                 headers: { Authorization: `Bearer ${token}` },
               }
@@ -99,7 +99,7 @@ export default function ListaCanciones() {
     const token = getToken();
     try {
       const res = await axios.get(
-        `http://localhost:5000/t/playlist/canciones/${playlistId}`,
+        `${API_URL}/t/playlist/canciones/${playlistId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -142,7 +142,7 @@ export default function ListaCanciones() {
     const token = getToken();
     if (!token || !userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/t/cola/${userId}`, {
+      const res = await axios.get(`${API_URL}/t/cola/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCola(res.data?.canciones || []);

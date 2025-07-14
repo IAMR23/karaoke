@@ -12,29 +12,33 @@ export default function VideoPlayer({ cola = [], currentIndex, setCurrentIndex }
 
   const currentVideo = playlist[currentIndex];
 
+  // Previene errores si currentIndex está fuera de rango
+  useEffect(() => {
+    if (currentIndex >= playlist.length) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, playlist.length, setCurrentIndex]);
+
   const nextVideo = () => {
-  if (currentIndex < cola.length - 1) {
-    setCurrentIndex(currentIndex + 1);
-    setShowNextMessage(false);
-  }
-};
+    if (currentIndex < playlist.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      setShowNextMessage(false);
+    }
+  };
 
-const prevVideo = () => {
-  if (currentIndex > 0) {
-    setCurrentIndex(currentIndex - 1);
-    setShowNextMessage(false);
-  }
-};
-
-
+  const prevVideo = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setShowNextMessage(false);
+    }
+  };
 
   const handleProgress = ({ playedSeconds }) => {
     const duration = playerRef.current?.getDuration?.();
     if (duration && duration - playedSeconds <= 20) {
       const next = playlist[currentIndex + 1];
       if (next) {
-        setNextSongName(next.titulo);
-        console.log(next.titulo)
+        setNextSongName(next.titulo || "Siguiente canción");
         setShowNextMessage(true);
       }
     } else {
@@ -42,7 +46,6 @@ const prevVideo = () => {
     }
   };
 
-  // Detección de modo pantalla completa
   useEffect(() => {
     const handleFullscreenChange = () => {
       const fsElement =
@@ -60,7 +63,6 @@ const prevVideo = () => {
     };
   }, []);
 
-  // Entrar en pantalla completa desde el botón
   const toggleFullscreen = () => {
     const el = containerRef.current;
     if (!el) return;
@@ -72,22 +74,39 @@ const prevVideo = () => {
     }
   };
 
+  // Si no hay canciones
   if (!Array.isArray(cola) || cola.length === 0) {
-  return (
-    <div
-      style={{
-        background: "#000",
-        color: "white",
-        padding: "20px",
-        textAlign: "center",
-        borderRadius: "10px",
-      }}
-    >
-      🎧 No hay canciones en la cola. Añade una desde el buscador o playlist.
-    </div>
-  );
-}
+    return (
+      <div
+        style={{
+          background: "#000",
+          color: "white",
+          padding: "20px",
+          textAlign: "center",
+          borderRadius: "10px",
+        }}
+      >
+        🎧 No hay canciones en la cola. Añade una desde el buscador o playlist.
+      </div>
+    );
+  }
 
+  // Si la canción actual no tiene videoUrl
+  if (!currentVideo || !currentVideo.videoUrl) {
+    return (
+      <div
+        style={{
+          background: "#000",
+          color: "white",
+          padding: "20px",
+          textAlign: "center",
+          borderRadius: "10px",
+        }}
+      >
+        ⚠️ Esta canción no tiene un video disponible para reproducir.
+      </div>
+    );
+  }
 
   return (
     <div
@@ -98,18 +117,16 @@ const prevVideo = () => {
         background: "#000",
       }}
     >
-      {/* Mensaje administrador */}
-      {!isFullscreen && (
-        <p style={{ fontWeight: "bold", textAlign: "center", color: "white" }}>
+      {isFullscreen && (
+        <p style={{ fontWeight: "bold", textAlign: "center", color: "white" , justifyContent : "center" }}>
           💡 Mensaje del administrador: ¡Recuerda hidratarte!
         </p>
       )}
 
-      {/* Reproductor y overlays */}
       <div style={{ position: "relative" }}>
         <ReactPlayer
           ref={playerRef}
-          url={currentVideo.videoUrl}
+          url={currentVideo.videoUrl || ""}
           controls
           playing
           width="100%"
@@ -118,30 +135,17 @@ const prevVideo = () => {
           onEnded={nextVideo}
           config={{
             youtube: {
-              playerVars : {
-                fs : 0 , 
-              }
-            }
-          }} 
+              playerVars: {
+                fs: 0,
+              },
+            },
+          }}
         />
 
-        {/* Flechas de navegación */}
         <button
           onClick={prevVideo}
           disabled={currentIndex === 0}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "10px",
-            transform: "translateY(-50%)",
-            fontSize: "30px",
-            background: "rgba(0,0,0,0.5)",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            padding: "10px",
-            cursor: currentIndex === 0 ? "not-allowed" : "pointer",
-          }}
+          style={navButtonStyle("left", currentIndex === 0)}
         >
           ‹
         </button>
@@ -149,25 +153,11 @@ const prevVideo = () => {
         <button
           onClick={nextVideo}
           disabled={currentIndex === playlist.length - 1}
-          style={{
-            position: "absolute",
-            top: "50%",
-            right: "10px",
-            transform: "translateY(-50%)",
-            fontSize: "30px",
-            background: "rgba(0,0,0,0.5)",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            padding: "10px",
-            cursor:
-              currentIndex === playlist.length - 1 ? "not-allowed" : "pointer",
-          }}
+          style={navButtonStyle("right", currentIndex === playlist.length - 1)}
         >
           ›
         </button>
 
-        {/* Mensaje de siguiente canción */}
         {showNextMessage && (
           <div
             style={{
@@ -187,7 +177,6 @@ const prevVideo = () => {
           </div>
         )}
 
-        {/* Botón para pantalla completa */}
         <button
           onClick={toggleFullscreen}
           style={{
@@ -209,3 +198,18 @@ const prevVideo = () => {
     </div>
   );
 }
+
+// Estilos reutilizables para botones de navegación
+const navButtonStyle = (side, disabled) => ({
+  position: "absolute",
+  top: "50%",
+  [side]: "10px",
+  transform: "translateY(-50%)",
+  fontSize: "30px",
+  background: "rgba(0,0,0,0.5)",
+  color: "white",
+  border: "none",
+  borderRadius: "50%",
+  padding: "10px",
+  cursor: disabled ? "not-allowed" : "pointer",
+});

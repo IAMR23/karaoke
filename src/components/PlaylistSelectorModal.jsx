@@ -23,7 +23,7 @@ export default function PlaylistSelectorModal({
       setError(null);
       try {
         const token = getToken();
-        const res = await axios.get(`http://localhost:5000/t/playlist/${userId}`, {
+        const res = await axios.get(`${API_URL}/t/playlist/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPlaylists(res.data || []);
@@ -47,7 +47,7 @@ export default function PlaylistSelectorModal({
     try {
       const token = getToken();
       await axios.post(
-        `http://localhost:5000/t/playlist/${selectedPlaylistId}/addSong/`,
+        `${API_URL}/t/playlist/${selectedPlaylistId}/addSong/`,
         { songId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

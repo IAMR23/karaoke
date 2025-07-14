@@ -14,7 +14,7 @@ export default function PlanesActivos({ id }) {
       setError("");
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/paypal/planes/${id}`
+        `${API_URL}/paypal/planes/${id}`
       );
       const todosLosPlanes = response.data || [];
 

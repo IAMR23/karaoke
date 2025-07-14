@@ -10,7 +10,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.clear();
     setAuth({ isAuthenticated: false, rol: null, userId: null });
-    navigate("/");
+    window.location.href = "/";
   };
 
   return (
@@ -28,7 +28,10 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse justify-content-center" id="mainNavbar">
+        <div
+          className="collapse navbar-collapse justify-content-center"
+          id="mainNavbar"
+        >
           <ul className="navbar-nav d-flex flex-wrap align-items-center gap-3">
             <li className="nav-item">
               <Link className="nav-link" to="/planes">

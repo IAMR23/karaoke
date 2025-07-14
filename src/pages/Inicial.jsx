@@ -17,11 +17,12 @@ import SolicitudesCancion from "./SolicitudCancion";
 import LoginForm from "../components/LoginForm";
 import ListadoPDFCanciones from "../components/ListadoPDFCanciones";
 import AyudaPage from "./AyudaPage";
-import { API_URL } from "../config"
+import { API_URL } from "../config";
 import { getToken } from "../utils/auth";
+import PublicacionesPage from "./PublicacionesPage";
+import PlantTest from "../components/PlanTest";
 
 export default function Inicial() {
-
   const [cola, setCola] = useState([]);
   const [userId, setUserId] = useState(null);
   const [playlists, setPlaylists] = useState([]);
@@ -31,6 +32,10 @@ export default function Inicial() {
   // Renderizado
   const [seccionActiva, setSeccionActiva] = useState("video");
   const navigate = useNavigate();
+
+  const handleLoginSuccess = () => {
+    setSeccionActiva("video");
+  };
 
   const renderContenido = () => {
     switch (seccionActiva) {
@@ -50,6 +55,8 @@ export default function Inicial() {
             onSelect={(playlist) => {
               setSelectedPlaylist(playlist);
               cargarPlaylistACola(playlist._id);
+              setSeccionActiva("video"); // 👈 esto lleva al VideoPlayer
+
               setShowModal(false);
             }}
             onAdd={handleAddPlaylist}
@@ -69,17 +76,17 @@ export default function Inicial() {
         return <ScannerCelular />;
 
       case "ingresar":
-        return <LoginForm />;
+        return <LoginForm onLoginSuccess={handleLoginSuccess} />;
       case "listadoPdf":
         return <ListadoPDFCanciones />;
       case "calificacion":
         return <MasCantado />;
       case "suscribir":
-        return <ListaCanciones />;
+        return <PlantTest />;
       case "ayuda":
         return <AyudaPage />;
       case "galeriaOtros":
-        return <ScannerCelular />;
+        return <PublicacionesPage />;
       case "tv":
         return <ScannerCelular />;
 
@@ -228,14 +235,24 @@ export default function Inicial() {
 
   return (
     <>
-      <div className="fondo container-fluid px-4 py-3 d-flex flex-column justify-content-center align-items-center">
-        <div className="d-flex flex-row justify-content-center align-items-center w-100">
-          <img src="./icono.png" alt="" width="100rem" />
+      <div className="fondo container-fluid  overflow-hidden px-2 px-md-4 py-3 d-flex flex-column justify-content-center align-items-center">
+        <div className="d-flex flex-wrap justify-content-center align-items-center w-100 gap-3">
+          <img
+            src="./icono.png"
+            alt="icono"
+            style={{ width: "60px", height: "auto" }}
+          />
           <img
             onClick={() => setSeccionActiva("video")}
             src="./logo.png"
-            alt=""
-            className="img-fluid w-40 w-sm-75 w-md-30 w-lg-25"
+            alt="logo"
+            className="img-fluid"
+            style={{
+              width: "80%", // 80% en móviles
+              maxWidth: "600px", // máximo ancho en pantallas grandes
+              cursor: "pointer",
+              minWidth: "250px", // mínimo ancho para que no se vea muy pequeño en tablets
+            }}
           />
         </div>
 
@@ -261,7 +278,7 @@ export default function Inicial() {
               Favoritos
             </button>
             <button
-              onClick={() => setSeccionActiva("listaCanciones")}
+              onClick={() => navigate("/listaCanciones")}
               className="boton-personalizado rojo"
             >
               Lista de Canciones
@@ -280,12 +297,14 @@ export default function Inicial() {
           <div className="flex-grow-1"> {renderContenido()}</div>
 
           <div className="d-flex flex-row flex-md-column flex-wrap justify-content-center gap-2">
-            <button
-              className="boton-personalizado rojo"
-              onClick={() => setSeccionActiva("ingresar")}
-            >
-              Ingresar
-            </button>
+            {!getToken() && (
+              <button
+                className="boton-personalizado rojo"
+                onClick={() => setSeccionActiva("ingresar")}
+              >
+                Ingresar
+              </button>
+            )}
             <button
               className="boton-personalizado verde"
               onClick={() => setSeccionActiva("listadoPdf")}
@@ -294,14 +313,24 @@ export default function Inicial() {
             </button>
 
             <button className="boton-personalizado rojo">Calificación</button>
-            <button className="boton-personalizado verde">Suscribir</button>
+            <button
+              className="boton-personalizado verde"
+              onClick={() => setSeccionActiva("suscribir")}
+            >
+              Suscribir
+            </button>
             <button
               className="boton-personalizado rojo"
               onClick={() => setSeccionActiva("ayuda")}
             >
               Ayuda
             </button>
-            <button className="boton-personalizado verde">Galería Otros</button>
+            <button
+              className="boton-personalizado verde"
+              onClick={() => setSeccionActiva("galeriaOtros")}
+            >
+              Galería Otros
+            </button>
           </div>
         </div>
 

@@ -21,27 +21,36 @@ const ListadoPDFCanciones = () => {
     }
   };
 
-  const generarPDF = () => {
-    const doc = new jsPDF();
-    doc.text("Listado de Canciones", 14, 10);
+ const generarPDF = () => {
+  const doc = new jsPDF();
+  const titulo = "AMERICAN KARAOKE - LISTA POR ARTISTA";
 
-    const data = canciones.map((cancion, index) => [
-      index + 1,
-      cancion.artista || "Sin artista",
-      cancion.titulo || "Sin título",
-      Array.isArray(cancion.generos)
-        ? cancion.generos.map((g) => g.nombre || g).join(", ")
-        : "Sin género",
-    ]);
+  // Calcular el ancho de la página y del texto
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const textWidth = doc.getTextWidth(titulo);
+  const x = (pageWidth - textWidth) / 2;
 
-    autoTable(doc, {
-      head: [["Nº", "Artista", "Título", "Género"]],
-      body: data,
-      startY: 20,
-    });
+  // Agregar texto centrado
+  doc.text(titulo, x, 10);
 
-    doc.save("listado_canciones.pdf");
-  };
+  const data = canciones.map((cancion, index) => [
+    index + 1,
+    cancion.artista || "Sin artista",
+    cancion.titulo || "Sin título",
+    Array.isArray(cancion.generos)
+      ? cancion.generos.map((g) => g.nombre || g).join(", ")
+      : "Sin género",
+  ]);
+
+  autoTable(doc, {
+    head: [["Nº", "Artista", "Título", "Género"]],
+    body: data,
+    startY: 20,
+  });
+
+  doc.save("listado_canciones.pdf");
+};
+
 
   return (
     <div className="container my-4">
