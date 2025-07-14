@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_URL } from "../config"
 
 const CrearPlanModal = ({ show, onClose, productId, onPlanCreado }) => {
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const [form, setForm] = useState({
     nombre: "",

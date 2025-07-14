@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { API_URL } from "../config"
 
-
-  const API_URL2 = import.meta.env.VITE_API_URL;
-
-
-const API_URL = `${API_URL2}/genero`;
+const API_GENERO = `${API_URL}/genero`;
 
 export default function GeneroCRUD() {
   const [generos, setGeneros] = useState([]);
@@ -20,7 +17,7 @@ export default function GeneroCRUD() {
 
   const fetchGeneros = async () => {
     try {
-      const res = await axios.get(API_URL, { headers });
+      const res = await axios.get(API_GENERO, { headers });
       setGeneros(res.data.genero);
     } catch (error) {
       console.error("Error al obtener géneros:", error);
@@ -56,9 +53,9 @@ export default function GeneroCRUD() {
 
     try {
       if (editId) {
-        await axios.put(`${API_URL}/${editId}`, formData, { headers });
+        await axios.put(`${API_GENERO}/${editId}`, formData, { headers });
       } else {
-        await axios.post(API_URL, formData, { headers });
+        await axios.post(API_GENERO, formData, { headers });
       }
       setForm({ nombre: "" });
       setEditId(null);
@@ -76,7 +73,7 @@ export default function GeneroCRUD() {
   const handleDelete = async (id) => {
     if (!window.confirm("¿Estás seguro de eliminar este género?")) return;
     try {
-      await axios.delete(`${API_URL}/${id}`, { headers });
+      await axios.delete(`${API_GENERO}/${id}`, { headers });
       fetchGeneros();
     } catch (error) {
       console.error("Error al eliminar género:", error);

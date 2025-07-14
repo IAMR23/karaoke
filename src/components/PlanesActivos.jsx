@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../config"
 
 export default function PlanesActivos({ id }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [planesActivos, setPlanesActivos] = useState([]);
 
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchPlanesActivos = async () => {
     try {

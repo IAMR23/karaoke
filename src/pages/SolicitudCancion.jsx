@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { API_URL } from "../config"
 
 const SolicitudesCancion = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -11,13 +12,8 @@ const SolicitudesCancion = () => {
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
 
-
-    const API_URL2 = import.meta.env.VITE_API_URL;
-
-
-
-  const API_SOLICITUD = `${API_URL2}/solicitud`;
-  const API_USER = `${API_URL2}/users`; // Ajusta si tienes prefijo /api
+  const API_SOLICITUD = `${API_URL}/solicitud`;
+  const API_USER = `${API_URL}/users`; // Ajusta si tienes prefijo /api
 
   useEffect(() => {
     const token = localStorage.getItem("token");

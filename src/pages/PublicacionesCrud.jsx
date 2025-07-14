@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
+import { API_URL } from "../config"
 
-
-  const API_URL2 = import.meta.env.VITE_API_URL;
-
-
-
-const API_URL = `${API_URL2}/publicacion`;
+const API_PUBLICACION = `${API_URL}/publicacion`;
 
 const PublicacionesCrud = () => {
   const [publicaciones, setPublicaciones] = useState([]);
@@ -31,7 +27,7 @@ const PublicacionesCrud = () => {
   const cargarPublicaciones = async () => {
     try {
       setCargando(true);
-      const res = await axios.get(API_URL);
+      const res = await axios.get(API_PUBLICACION);
       setPublicaciones(res.data);
       setError(null);
     } catch {
@@ -85,9 +81,9 @@ const PublicacionesCrud = () => {
     try {
       setCargando(true);
       if (editarId) {
-        await axios.put(`${API_URL}/${editarId}`, formData);
+        await axios.put(`${API_PUBLICACION}/${editarId}`, formData);
       } else {
-        await axios.post(API_URL, formData);
+        await axios.post(API_PUBLICACION, formData);
       }
       cerrarModal();
       cargarPublicaciones();
@@ -101,7 +97,7 @@ const PublicacionesCrud = () => {
   const eliminarPublicacion = async (id) => {
     if (!window.confirm("¿Eliminar publicación?")) return;
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${API_PUBLICACION}/${id}`);
       cargarPublicaciones();
     } catch {
       setError("Error al eliminar");

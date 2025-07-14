@@ -1,7 +1,6 @@
 import React from "react";
 import Paypal from "../components/Paypal";
 import PaypalSuscripcion from "../components/PaypalSuscripcion";
-import PlanesActivos from "../components/PlanesActivos";
 import PlantTest from "../components/PlanTest";
 
 export default function Planes() {

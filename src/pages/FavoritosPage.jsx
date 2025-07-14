@@ -2,18 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { BsTrash, BsXCircle } from "react-icons/bs";
+import { API_URL } from "../config"
+import { getYoutubeThumbnail } from "../utils/getYoutubeThumbnail";
 
-  const API_URL2 = import.meta.env.VITE_API_URL;
+const API_FAVORITOS = `${API_URL}/t/favoritos`; // ajusta según tu backend
 
-
-
-const API_URL = `${API_URL2}/t/favoritos`; // ajusta según tu backend
-
-function getYoutubeThumbnail(url) {
-  if (!url) return "";
-  const match = url.match(/(?:\?v=|\/embed\/|\.be\/)([\w\-]{11})/);
-  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : "";
-}
 
 const FavoritosPage = () => {
   const token = localStorage.getItem("token");
@@ -31,7 +24,7 @@ const FavoritosPage = () => {
   const cargarFavoritos = async () => {
     try {
       setCargando(true);
-      const res = await axios.get(`${API_URL}/${userId}`, { headers });
+      const res = await axios.get(`${API_FAVORITOS}/${userId}`, { headers });
       setCanciones(res.data?.canciones || []);
     } catch (err) {
       setCanciones(res.data?.canciones || []);
@@ -43,7 +36,7 @@ const FavoritosPage = () => {
 
   const eliminarCancion = async (songId) => {
     try {
-      await axios.delete(`${API_URL}/remove`, {
+      await axios.delete(`${API_FAVORITOS}/remove`, {
         data: { songId },
         headers,
       });
@@ -55,7 +48,7 @@ const FavoritosPage = () => {
 
   const vaciarFavoritos = async () => {
     try {
-      await axios.delete(`${API_URL}/clear/${userId}`, { headers });
+      await axios.delete(`${API_FAVORITOS}/clear/${userId}`, { headers });
       cargarFavoritos();
     } catch (err) {
       console.error("Error al vaciar favoritos:", err);

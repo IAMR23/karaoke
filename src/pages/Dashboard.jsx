@@ -1,7 +1,5 @@
-import MisDepartamentos from "../components/MisDepartamentos";
 
 function Dashboard() {
-
 
   return (
     <div className="p-4">

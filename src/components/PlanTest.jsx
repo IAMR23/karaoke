@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PaypalSuscripcion from "./PaypalSuscripcion";
 import axios from "axios";
+import { API_URL } from "../config"
 
 const PlantTest = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const [productos, setProductos] = useState([]);
   const [loadingProductos, setLoadingProductos] = useState(true);

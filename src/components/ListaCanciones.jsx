@@ -5,11 +5,12 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "../styles/botones.css";
 import "../styles/disco.css";
+import { API_URL } from "../config"
+
 
 import { useNavigate } from "react-router-dom";
 
 export default function ListaCanciones() {
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const [cola, setCola] = useState([]);
   const [userId, setUserId] = useState(null);

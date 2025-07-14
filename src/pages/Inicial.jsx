@@ -17,10 +17,9 @@ import SolicitudesCancion from "./SolicitudCancion";
 import LoginForm from "../components/LoginForm";
 import ListadoPDFCanciones from "../components/ListadoPDFCanciones";
 import AyudaPage from "./AyudaPage";
+import { API_URL } from "../config"
 
 export default function Inicial() {
-
-    const API_URL = import.meta.env.VITE_API_URL;
 
   const [cola, setCola] = useState([]);
   const [userId, setUserId] = useState(null);
@@ -66,7 +65,7 @@ export default function Inicial() {
       case "sugerirCanciones":
         return <SolicitudesCancion />;
       case "scanner":
-        return <ScannerCelular />; 
+        return <ScannerCelular />;
 
       case "ingresar":
         return <LoginForm />;
@@ -286,19 +285,21 @@ export default function Inicial() {
             >
               Ingresar
             </button>
-            <button className="boton-personalizado verde"
-                            onClick={() => setSeccionActiva("listadoPdf")} > 
-Listado PDF</button>
-
-
-            
+            <button
+              className="boton-personalizado verde"
+              onClick={() => setSeccionActiva("listadoPdf")}
+            >
+              Listado PDF
+            </button>
 
             <button className="boton-personalizado rojo">Calificación</button>
             <button className="boton-personalizado verde">Suscribir</button>
-            <button className="boton-personalizado rojo"
-                                        onClick={() => setSeccionActiva("ayuda")} > 
-
-Ayuda</button>
+            <button
+              className="boton-personalizado rojo"
+              onClick={() => setSeccionActiva("ayuda")}
+            >
+              Ayuda
+            </button>
             <button className="boton-personalizado verde">Galería Otros</button>
           </div>
         </div>
@@ -312,7 +313,6 @@ Ayuda</button>
               onClick={() => setCurrentIndex(index)}
               className="song-icon position-relative"
               style={{ cursor: "pointer" }}
-              
             >
               <FaCompactDisc size={40} className="mb-1 text-primary" />
               <div className="custom-tooltip">

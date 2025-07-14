@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config"
 
 const UsuariosPage = () => {
-
-    const API_URL = import.meta.env.VITE_API_URL;
-
-
   const [usuarios, setUsuarios] = useState([]);
   const [filtroSuscripcion, setFiltroSuscripcion] = useState("todos");
 

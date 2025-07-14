@@ -4,9 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import PropertyDetail from "./pages/PropertyDetail";
 import Dashboard from "./pages/Dashboard";
-import SearchResults from "./pages/SearchResults";
 import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegistrationForm";
 
@@ -45,10 +43,11 @@ function App() {
       }
     }
   }, []);
+  //ccs
 
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter> 
         <div>
           {/* 🔹 Pasamos auth y setAuth a Navbar para manejar autenticación */}
           <Navbar auth={auth} setAuth={setAuth} />
@@ -72,8 +71,6 @@ function App() {
 
               <Route index="/" element={<Inicial />} />
               <Route path="/planes" element={<PlanTest />} />
-              <Route path="/propiedad/:id" element={<PropertyDetail />} />
-              <Route path="/buscar" element={<SearchResults />} />
               {/* 🔹 Pasamos setAuth a LoginForm para actualizar estado tras login */}
               <Route path="/login" element={<LoginForm setAuth={setAuth} />} />
               <Route path="/registro" element={<RegistrationForm />} />

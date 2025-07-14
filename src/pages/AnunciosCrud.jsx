@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiEdit, FiTrash2, FiEye, FiEyeOff } from "react-icons/fi";
+import { API_URL } from "../config"
 
 
 
-
-  const API_URL2 = import.meta.env.VITE_API_URL;
-
-const API_URL = `${API_URL2}/anuncio`;
+const API_ANUNCIOS = `${API_URL}/anuncio`;
 
 export default function AnunciosCRUD() {
   const [anuncios, setAnuncios] = useState([]);
@@ -24,8 +22,9 @@ export default function AnunciosCRUD() {
 
   const fetchAnuncios = async () => {
     try {
-      const res = await axios.get(`${API_URL}/anuncio`);
+      const res = await axios.get(`${API_ANUNCIOS}/anuncio`);
       setAnuncios(res.data);
+      console.log(res.data)
     } catch (err) {
       console.error("Error al obtener anuncios", err);
     }
@@ -40,9 +39,9 @@ export default function AnunciosCRUD() {
       };
 
       if (editId) {
-        await axios.put(`${API_URL}/${editId}`, form, { headers });
+        await axios.put(`${API_ANUNCIOS}/${editId}`, form, { headers });
       } else {
-        await axios.post(API_URL, form, { headers });
+        await axios.post(API_ANUNCIOS, form, { headers });
       }
 
       setForm({ titulo: "", contenido: "", visible: true });
@@ -58,7 +57,7 @@ export default function AnunciosCRUD() {
       const headers = {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       };
-      await axios.delete(`${API_URL}/${id}`, { headers });
+      await axios.delete(`${API_ANUNCIOS}/${id}`, { headers });
       fetchAnuncios();
     } catch (err) {
       console.error("Error al eliminar el anuncio", err);
@@ -71,7 +70,7 @@ export default function AnunciosCRUD() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       };
       await axios.put(
-        `${API_URL}/${anuncio._id}`,
+        `${API_ANUNCIOS}/${anuncio._id}`,
         {
           ...anuncio,
           visible: !anuncio.visible,

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { API_URL } from "../config"
 
 const ListadoPDFCanciones = () => {
-    const API_URL = import.meta.env.VITE_API_URL;
 
   const [canciones, setCanciones] = useState([]);
 

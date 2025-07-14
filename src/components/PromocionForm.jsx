@@ -1,11 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { API_URL } from "../config"
 
 function PromocionForm() {
-
-
-    const API_URL = import.meta.env.VITE_API_URL;
-
+  
   const [formData, setFormData] = useState({
     titulo: "",
     descripcion: "",

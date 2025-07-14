@@ -4,21 +4,10 @@ import { BsHeart, BsList } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa";
 import PlaylistSelectorModal from "./PlaylistSelectorModal";
 import { jwtDecode } from "jwt-decode";
-
-
-  const API_URL = import.meta.env.VITE_API_URL;
-
-
+import { API_URL } from "../config"
+import { getYoutubeThumbnail } from "../utils/getYoutubeThumbnail";
 const SONG_URL = `${API_URL}/song`;
 const FILTRO_URL = `${API_URL}/song/filtrar`;
-
-function getYoutubeThumbnail(videoUrl) {
-  if (!videoUrl) return null;
-  const match = videoUrl.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w\-]+)/
-  );
-  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
-}
 
 export default function GaleriaYoutube({
   setCola,

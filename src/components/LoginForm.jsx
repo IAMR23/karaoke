@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/userServices";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../utils/AuthContext";
-
+ 
 function LoginForm() {
-    const API_URL = import.meta.env.VITE_API_URL;
 
   const { setAuth } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({ email: "", password: "" });

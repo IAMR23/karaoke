@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { jwtDecode } from "jwt-decode";
+import { API_URL } from "../config"
 
 function Message({ content }) {
   return <p>{content}</p>;
 }
 
 function PaypalSuscripcion({ planId }) {
-  const API_URL = import.meta.env.VITE_API_URL;
 
   let userId = null;
   let isAuthenticated = false;

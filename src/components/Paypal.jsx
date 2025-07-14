@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { API_URL } from "../config"
 
 function Message({ content }) {
   return <p>{content}</p>;
 }
 
 function Paypal() {
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const initialOptions = {
     "client-id":
