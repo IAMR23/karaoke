@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { jwtDecode } from "jwt-decode";
 import { API_URL } from "../config"
+import { getToken } from "../utils/auth";
 
 function Message({ content }) {
   return <p>{content}</p>;
@@ -12,7 +13,7 @@ function PaypalSuscripcion({ planId }) {
   let userId = null;
   let isAuthenticated = false;
   try {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (token && typeof token === "string") {
       const decoded = jwtDecode(token);
       userId = decoded.userId;
@@ -59,7 +60,7 @@ function PaypalSuscripcion({ planId }) {
             console.log("Datos de la suscripción:", data);
 
             try {
-              const token = localStorage.getItem("token"); // o como guardes tu JWT
+              const token = getToken(); // o como guardes tu JWT
 
               const res = await fetch(
                 `${API_URL}/suscripcion/activar-suscripcion`,

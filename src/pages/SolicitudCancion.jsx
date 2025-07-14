@@ -3,6 +3,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { API_URL } from "../config"
+import { getToken } from "../utils/auth";
 
 const SolicitudesCancion = () => {
   const [solicitudes, setSolicitudes] = useState([]);
@@ -16,7 +17,7 @@ const SolicitudesCancion = () => {
   const API_USER = `${API_URL}/users`; // Ajusta si tienes prefijo /api
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (token) {
       try {
         const decoded = jwtDecode(token);

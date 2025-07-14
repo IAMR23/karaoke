@@ -9,6 +9,7 @@ import { API_URL } from "../config"
 
 
 import { useNavigate } from "react-router-dom";
+import { getToken } from "../utils/auth";
 
 export default function ListaCanciones() {
 
@@ -40,7 +41,7 @@ export default function ListaCanciones() {
 
   // Crear nuevo playlist
   const handleAddPlaylist = async (name) => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     try {
       const res = await axios.post(
         `${API_URL}/t/playlist`,
@@ -64,7 +65,7 @@ export default function ListaCanciones() {
 
   // Cargar token y datos del usuario
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (token) {
       try {
@@ -95,7 +96,7 @@ export default function ListaCanciones() {
   }, [userId]);
 
   const cargarPlaylistACola = async (playlistId) => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     try {
       const res = await axios.get(
         `http://localhost:5000/t/playlist/canciones/${playlistId}`,
@@ -114,7 +115,7 @@ export default function ListaCanciones() {
 
   const insertarCancion = async (songId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       const res = await axios.get(`${API_URL}/song/${songId}`);
       const nuevaCancion = res.data;
 
@@ -138,7 +139,7 @@ export default function ListaCanciones() {
   };
 
   const cargarCola = async () => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (!token || !userId) return;
     try {
       const res = await axios.get(`http://localhost:5000/t/cola/${userId}`, {

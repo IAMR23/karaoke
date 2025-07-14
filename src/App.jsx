@@ -24,6 +24,7 @@ import Productos from "./components/Productos";
 import ProductoDetalle from "./components/ProductoDetalle";
 import PlanTest from "./components/PlanTest";
 import { AuthProvider } from "./utils/AuthContext";
+import { getToken } from "./utils/auth";
 
 function App() {
   // 🔹 Estado global de autenticación
@@ -31,7 +32,7 @@ function App() {
 
   useEffect(() => {
     // 🔹 Verificar si hay un token guardado
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (token) {
       try {
         const decodedToken = jwtDecode(token);

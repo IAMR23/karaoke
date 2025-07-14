@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getToken } from "../utils/auth";
 
 export default function PlaylistSelectorModal({ 
   userId, 
@@ -21,7 +22,7 @@ export default function PlaylistSelectorModal({
       setLoading(true);
       setError(null);
       try {
-        const token = localStorage.getItem("token");
+        const token = getToken();
         const res = await axios.get(`http://localhost:5000/t/playlist/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -44,7 +45,7 @@ export default function PlaylistSelectorModal({
 
     setAdding(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       await axios.post(
         `http://localhost:5000/t/playlist/${selectedPlaylistId}/addSong/`,
         { songId },

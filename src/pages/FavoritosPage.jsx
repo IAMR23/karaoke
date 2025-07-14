@@ -4,12 +4,13 @@ import { jwtDecode } from "jwt-decode";
 import { BsTrash, BsXCircle } from "react-icons/bs";
 import { API_URL } from "../config"
 import { getYoutubeThumbnail } from "../utils/getYoutubeThumbnail";
+import { getToken } from "../utils/auth";
 
 const API_FAVORITOS = `${API_URL}/t/favoritos`; // ajusta según tu backend
 
 
 const FavoritosPage = () => {
-  const token = localStorage.getItem("token");
+  const token = getToken();
   const decoded = jwtDecode(token);
   const userId = decoded.userId;
 

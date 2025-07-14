@@ -18,6 +18,7 @@ import LoginForm from "../components/LoginForm";
 import ListadoPDFCanciones from "../components/ListadoPDFCanciones";
 import AyudaPage from "./AyudaPage";
 import { API_URL } from "../config"
+import { getToken } from "../utils/auth";
 
 export default function Inicial() {
 
@@ -113,7 +114,7 @@ export default function Inicial() {
 
   // Crear nuevo playlist
   const handleAddPlaylist = async (name) => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     try {
       const res = await axios.post(
         `${API_URL}/t/playlist`,
@@ -137,7 +138,7 @@ export default function Inicial() {
 
   // Cargar token y datos del usuario
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (token) {
       try {
@@ -168,7 +169,7 @@ export default function Inicial() {
   }, [userId]);
 
   const cargarPlaylistACola = async (playlistId) => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     try {
       const res = await axios.get(
         `${API_URL}/t/playlist/canciones/${playlistId}`,
@@ -187,7 +188,7 @@ export default function Inicial() {
 
   const insertarCancion = async (songId) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       const res = await axios.get(`${API_URL}/song/${songId}`);
       const nuevaCancion = res.data;
 
@@ -211,7 +212,7 @@ export default function Inicial() {
   };
 
   const cargarCola = async () => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (!token || !userId) return;
     try {
       const res = await axios.get(`${API_URL}/t/cola/${userId}`, {

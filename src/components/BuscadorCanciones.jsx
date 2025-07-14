@@ -6,6 +6,7 @@ import PlaylistSelectorModal from "./PlaylistSelectorModal";
 import { jwtDecode } from "jwt-decode";
 import { API_URL } from "../config"
 import { getYoutubeThumbnail } from "../utils/getYoutubeThumbnail";
+import { getToken } from "../utils/auth";
 const SONG_URL = `${API_URL}/song`;
 const FILTRO_URL = `${API_URL}/song/filtrar`;
 
@@ -29,7 +30,7 @@ export default function BuscadorCanciones({
   let userId = null;
   let isAuthenticated = false;
   try {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (token && typeof token === "string") {
       const decoded = jwtDecode(token);
       userId = decoded.userId;
@@ -89,7 +90,7 @@ export default function BuscadorCanciones({
   const agregarAFavoritos = async (songId) => {
     if (!isAuthenticated) return alert("Inicia sesión para usar favoritos");
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
       await axios.post(
         `${API_URL}/t/favoritos/add`,
         { songId },
@@ -121,7 +122,7 @@ export default function BuscadorCanciones({
 
   const handleAddToPlaylist = async (playlistId) => {
     if (!isAuthenticated) return;
-    const token = localStorage.getItem("token");
+    const token = getToken();
     try {
       await axios.post(
         `${API_URL}/t/playlist/cancion`,
